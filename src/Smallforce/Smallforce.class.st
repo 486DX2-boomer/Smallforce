@@ -68,6 +68,7 @@ The date format is EEE, dd MMM yyyy HH:mm:ss z. For example: If-Unmodified-Since
 
 { #category : #'Salesforce-list' }
 Smallforce >> listLimits [
+	"Lists information about limits in your org. For each limit, this resource returns the maximum allocation and the remaining allocation based on usage."
 
 	^ self newRequest methodGet:
 		  '/services/data/' , sfVersion , '/limits/'
