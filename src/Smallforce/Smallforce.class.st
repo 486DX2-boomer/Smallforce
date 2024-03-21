@@ -25,7 +25,7 @@ Smallforce >> accessToken: anObject [
 ]
 
 { #category : #'Salesforce-list' }
-Smallforce >> listDescribeGlobal [
+Smallforce >> describeGlobal [
 	"Lists the available objects and the associated metadata.
 https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/resources_describeGlobal.htm
 You can use the If-Modified-Since or If-Unmodified-Since header with this resource. When using the If-Modified-Since header, if no available object’s metadata has changed since the provided date, a 304 Not Modified status code is returned with no response body."
@@ -35,7 +35,7 @@ You can use the If-Modified-Since or If-Unmodified-Since header with this resour
 ]
 
 { #category : #'Salesforce-list' }
-Smallforce >> listDescribeGlobalIfModifiedSince: aDate [
+Smallforce >> describeGlobalIfModifiedSince: aDate [
 	"Lists the available objects and the associated metadata.
 https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/resources_describeGlobal.htm
 You can use the If-Modified-Since or If-Unmodified-Since header with this resource. When using the If-Modified-Since header, if no available object’s metadata has changed since the provided date, a 304 Not Modified status code is returned with no response body.
@@ -51,7 +51,7 @@ The date format is EEE, dd MMM yyyy HH:mm:ss z. For example: If-Unmodified-Since
 ]
 
 { #category : #'Salesforce-list' }
-Smallforce >> listDescribeGlobalIfUnmodifiedSince: aDate [
+Smallforce >> describeGlobalIfUnmodifiedSince: aDate [
 	"Lists the available objects and the associated metadata.
 https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/resources_describeGlobal.htm
 You can use the If-Modified-Since or If-Unmodified-Since header with this resource. When using the If-Modified-Since header, if no available object’s metadata has changed since the provided date, a 304 Not Modified status code is returned with no response body.
@@ -67,29 +67,11 @@ The date format is EEE, dd MMM yyyy HH:mm:ss z. For example: If-Unmodified-Since
 ]
 
 { #category : #'Salesforce-list' }
-Smallforce >> listLimits [
+Smallforce >> limits [
 	"Lists information about limits in your org. For each limit, this resource returns the maximum allocation and the remaining allocation based on usage."
 
 	^ self newRequest methodGet:
 		  '/services/data/' , sfVersion , '/limits/'
-]
-
-{ #category : #'Salesforce-list' }
-Smallforce >> listResourcesByVersion [
-	"Resources by Version
-Lists available resources for the specified API version, including resource name and URI.
-https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/resources_discoveryresource.htm"
-
-	^ self newRequest methodGet: '/services/data/' , sfVersion
-]
-
-{ #category : #'Salesforce-list' }
-Smallforce >> listVersions [
-	"Versions
-Lists summary information about each Salesforce version currently available, including the version, label, and a link to each version's root.
-https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/resources_versions.htm"
-
-	^ self newRequest methodGet: '/services/data/'
 ]
 
 { #category : #'instance creation' }
@@ -110,6 +92,25 @@ Smallforce >> org: anObject [
 	org := anObject
 ]
 
+{ #category : #'Salesforce-list' }
+Smallforce >> resourcesByVersion [
+	"Resources by Version
+Lists available resources for the specified API version, including resource name and URI.
+https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/resources_discoveryresource.htm"
+
+	^ self newRequest methodGet: '/services/data/' , sfVersion
+]
+
+{ #category : #'Salesforce-list' }
+Smallforce >> resourcesByVersion: salesforceVersion [
+	"Resources by Version
+Lists available resources for the specified API version, including resource name and URI.
+https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/resources_discoveryresource.htm
+Provide the Salesforce version in the form of v0.xx eg v0.60"
+
+	^ self newRequest methodGet: '/services/data/' , salesforceVersion
+]
+
 { #category : #accessing }
 Smallforce >> sfVersion [
 
@@ -120,4 +121,13 @@ Smallforce >> sfVersion [
 Smallforce >> sfVersion: anObject [
 
 	sfVersion := anObject
+]
+
+{ #category : #'Salesforce-list' }
+Smallforce >> versions [
+	"Versions
+Lists summary information about each Salesforce version currently available, including the version, label, and a link to each version's root.
+https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/resources_versions.htm"
+
+	^ self newRequest methodGet: '/services/data/'
 ]
