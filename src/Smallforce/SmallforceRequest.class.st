@@ -95,15 +95,15 @@ SmallforceRequest >> methodGet: anEndpointString [
 ]
 
 { #category : #'rest methods' }
-SmallforceRequest >> methodGet: anEndpointString withHeaders: aHeaderArray [
+SmallforceRequest >> methodGet: anEndpointString withHeaders: aHeaderDict [
 	"I return STON. For the raw return, use methodGetRaw.
-To use additional headers, add additional headers as an array of Association key:value pairs."
+To use additional headers, add a dictionary of headers."
 
 	| uri |
 	uri := org , anEndpointString.
 
-	aHeaderArray do: [ :h |
-		client headerAt: (h key) add: (h value) ].
+	aHeaderDict keysAndValuesDo: [ :header :headerArgument |
+		client headerAt: (header) add: (headerArgument) ].
 
 	^ STONJSON fromString: (client
 			   beOneShot;
