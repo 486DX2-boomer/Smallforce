@@ -26,15 +26,19 @@ SmallforceRequestTest >> setUp [
 	local := 'http://localhost:1701'.
 
 	"Create mock server and assign test endpoints"
+	Teapot stopAll.
 	Teapot on
 		GET: '/testMethodGet' -> '{ "message": "Hello World" }';
-		GET: '/testMethodGetWithHeaders' -> [ :req |
-				(req headers at: 'lastModified') ifNil: [
-						'{ "response": "Error: no header" }' ].
-				(req headers at: 'lastModified' = 'yesterday') ifTrue: [
-						'{ "response": "One modification since yesterday." }' ].
-				(req headers at: 'lastModified' = 'last week') ifTrue: [
-						'{ "response": "Two modifications since last week." }' ] ];
+		GET: '/testMethodGetWithHeaders' -> [ :req | 
+				[ req headers at: 'LastModified' ]
+					on: KeyNotFound
+					do: [ req abort: '{"response": "Error: no header"}' ].
+
+				(req headers at: 'LastModified') = 'yesterday' ifTrue: [ req abort:
+						'{"response": "One modification since yesterday"}' ].
+
+				(req headers at: 'LastModified') = 'lastweek' ifTrue: [ req abort: 
+						'{"response": "Two modifications since last week"}' ] ];
 		start
 ]
 
@@ -86,7 +90,7 @@ SmallforceRequestTest >> testMethodGetWithHeaders [
 	smallForceRequest := self mockRequest.
 	
 	headers := Dictionary new.
-	headers add: 'lastModified' -> 'yesterday'.
+	headers add: 'LastModified' -> 'yesterday'.
 	
 	mockResponseSuccess := STONJSON fromString: '{ "response": "One modification since yesterday" }'.
 	mockResponseFailure := STONJSON fromString: '{ "response": "Error: no header" }'.
