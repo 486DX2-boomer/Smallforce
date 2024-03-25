@@ -51,6 +51,14 @@ SmallforceRequest class >> newWithOrg: anOrg accessToken: aToken version: aSales
 	
 ]
 
+{ #category : #converting }
+SmallforceRequest class >> stonMarshal: aJSONByteString [
+
+	"Convert a JSON response from a SmallforceRequest to STON."
+
+	^ STONJSON fromString: aJSONByteString
+]
+
 { #category : #accessing }
 SmallforceRequest >> accessToken [
 
@@ -78,61 +86,75 @@ SmallforceRequest >> client: anObject [
 { #category : #'rest methods' }
 SmallforceRequest >> methodDelete: anEndpointString [
 
-	^ self shouldBeImplemented 
+	| uri |
+	uri := org , anEndpointString.
+
+	^ client
+		  beOneShot;
+		  headerAt: 'Authorization' add: 'Bearer ' , accessToken;
+		  delete: uri
+]
+
+{ #category : #'rest methods' }
+SmallforceRequest >> methodDelete: anEndpointString withHeaders: aHeaderDict [
+
+	| uri |
+	uri := org , anEndpointString.
+
+	aHeaderDict keysAndValuesDo: [ :header :headerArgument | 
+		client headerAt: header add: headerArgument ].
+
+	^ client
+		  beOneShot;
+		  headerAt: 'Authorization' add: 'Bearer ' , accessToken;
+		  delete: uri
 ]
 
 { #category : #'rest methods' }
 SmallforceRequest >> methodGet: anEndpointString [
+
 	"I return STON. For the raw response, use methodGetRaw."
 
 	| uri |
 	uri := org , anEndpointString.
 
-	^ STONJSON fromString: (client
-			   beOneShot;
-			   headerAt: 'Authorization' add: 'Bearer ' , accessToken;
-			   get: uri)
+	^ client
+		  beOneShot;
+		  headerAt: 'Authorization' add: 'Bearer ' , accessToken;
+		  get: uri
 ]
 
 { #category : #'rest methods' }
 SmallforceRequest >> methodGet: anEndpointString withHeaders: aHeaderDict [
-	"I return STON. For the raw return, use methodGetRaw.
-To use additional headers, add a dictionary of headers."
 
 	| uri |
 	uri := org , anEndpointString.
 
-	aHeaderDict keysAndValuesDo: [ :header :headerArgument |
-		client headerAt: (header) add: (headerArgument) ].
+	aHeaderDict keysAndValuesDo: [ :header :headerArgument | 
+		client headerAt: header add: headerArgument ].
 
-	^ STONJSON fromString: (client
-			   beOneShot;
-			   headerAt: 'Authorization' add: 'Bearer ' , accessToken;
-			   get: uri)
-]
-
-{ #category : #'rest methods' }
-SmallforceRequest >> methodGetRaw: anEndpointString [
-"I return the request as a raw ByteString. For STON, use methodGet."
-	| uri |
-	uri := org , anEndpointString.
-
-	 ^ client
-		beOneShot;
-		  headerAt: 'Authorization' add:'Bearer ', accessToken;
+	^ client
+		  beOneShot;
+		  headerAt: 'Authorization' add: 'Bearer ' , accessToken;
 		  get: uri
 ]
 
 { #category : #'rest methods' }
 SmallforceRequest >> methodPatch: anEndpointString [
 
-	^ self shouldBeImplemented 
+	^ self shouldBeImplemented
 ]
 
 { #category : #'rest methods' }
 SmallforceRequest >> methodPost: anEndpointString [
 
-	^ self shouldBeImplemented 
+	^ self shouldBeImplemented
+]
+
+{ #category : #'rest methods' }
+SmallforceRequest >> methodPut: anEndpointString [
+
+	^ self shouldBeImplemented
 ]
 
 { #category : #accessing }
