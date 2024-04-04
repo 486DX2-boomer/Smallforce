@@ -196,7 +196,7 @@ SmallforceRequestTest >> testMethodGetWithHeaders [
 ]
 
 { #category : #tests }
-SmallforceRequestTest >> testMethodPatch [
+SmallforceRequestTest >> testMethodPatchBody [
 
     | smallforceRequest response mockResponse |
     smallforceRequest := self mockRequest.
@@ -221,7 +221,7 @@ SmallforceRequestTest >> testMethodPatch [
 ]
 
 { #category : #tests }
-SmallforceRequestTest >> testMethodPost [
+SmallforceRequestTest >> testMethodPostBody [
 
     | smallforceRequest response mockResponse |
     smallforceRequest := self mockRequest.
@@ -246,7 +246,7 @@ SmallforceRequestTest >> testMethodPost [
 ]
 
 { #category : #tests }
-SmallforceRequestTest >> testMethodPut [
+SmallforceRequestTest >> testMethodPutBody [
 
     | smallforceRequest response mockResponse |
     smallforceRequest := self mockRequest.
