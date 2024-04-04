@@ -49,6 +49,9 @@ SmallforceRequestTest >> setUp [
 				(req headers at: 'LastModified') = 'yesterday' ifTrue: [ 
 						req abort:
 								'{"response": "Success: deleted object created yesterday"}' ] ];
+		PATCH: '/testMethodPatch/123' -> [ :req | (req contents = '{ "data": "patched example" }') ifTrue: [ req abort: '{ "message": "Resource patched successfully" }' ] ];
+		POST: '/testMethodPost/123' -> [ :req | (req contents = '{ "data": "post example" }') ifTrue: [ req abort: '{ "message": "Resource created successfully" }' ] ];
+		PUT: '/testMethodPut/123' -> [ :req | (req contents = '{ "data": "updated example" }') ifTrue: [ req abort: '{ "message": "Resource updated successfully" }' ] ];
 					start
 ]
 
@@ -192,7 +195,7 @@ SmallforceRequestTest >> testMethodGetWithHeaders [
 		
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #tests }
 SmallforceRequestTest >> testMethodPatch [
 
     | smallforceRequest response mockResponse |
@@ -217,14 +220,14 @@ SmallforceRequestTest >> testMethodPatch [
         'STONReaderError: At character 4: ''Cannot resolve class named #Not'''
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #tests }
 SmallforceRequestTest >> testMethodPost [
 
     | smallforceRequest response mockResponse |
     smallforceRequest := self mockRequest.
 
     mockResponse := STONJSON fromString: '{ "message": "Resource created successfully" }'.
-    response := smallforceRequest methodPost: '/testMethodPost' body: '{ "data": "example" }'.
+    response := smallforceRequest methodPost: '/testMethodPost/123' body: '{ "data": "post example" }'.
 
     "Valid request should return JSON converted to STON."
     self

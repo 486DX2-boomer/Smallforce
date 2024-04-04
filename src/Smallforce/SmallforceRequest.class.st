@@ -113,8 +113,6 @@ SmallforceRequest >> methodDelete: anEndpointString withHeaders: aHeaderDict [
 { #category : #'rest methods' }
 SmallforceRequest >> methodGet: anEndpointString [
 
-	"I return STON. For the raw response, use methodGetRaw."
-
 	| uri |
 	uri := org , anEndpointString.
 
@@ -140,21 +138,38 @@ SmallforceRequest >> methodGet: anEndpointString withHeaders: aHeaderDict [
 ]
 
 { #category : #'rest methods' }
-SmallforceRequest >> methodPatch: anEndpointString [
+SmallforceRequest >> methodPatch: anEndpointString body: aBodyString [ 
+	| uri |
+	uri := org , anEndpointString.
 
-	^ self shouldBeImplemented
+	^ client
+		  beOneShot;
+		  headerAt: 'Authorization' add: 'Bearer ' , accessToken;
+		  patch: uri contents: aBodyString
 ]
 
 { #category : #'rest methods' }
-SmallforceRequest >> methodPost: anEndpointString [
+SmallforceRequest >> methodPost: anEndpointString body: aBodyString [
 
-	^ self shouldBeImplemented
+	| uri |
+	uri := org , anEndpointString.
+
+	^ client
+		  beOneShot;
+		  headerAt: 'Authorization' add: 'Bearer ' , accessToken;
+		  post: uri contents: aBodyString
 ]
 
 { #category : #'rest methods' }
-SmallforceRequest >> methodPut: anEndpointString [
+SmallforceRequest >> methodPut: anEndpointString body: aBodyString [
 
-	^ self shouldBeImplemented
+	| uri |
+	uri := org , anEndpointString.
+
+	^ client
+		  beOneShot;
+		  headerAt: 'Authorization' add: 'Bearer ' , accessToken;
+		  put: uri contents: aBodyString
 ]
 
 { #category : #accessing }
