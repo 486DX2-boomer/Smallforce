@@ -5,7 +5,6 @@ Class {
 	#name : #SObject,
 	#superclass : #Object,
 	#instVars : [
-		'name',
 		'apiName'
 	],
 	#category : #'Smallforce-Base'
@@ -23,14 +22,22 @@ SObject >> apiName: anObject [
 	apiName := anObject
 ]
 
-{ #category : #accessing }
-SObject >> name [
+{ #category : #serializing }
+SObject >> toJSON [
 
-	^ name
-]
+	"Return this object's fields as JSON."
 
-{ #category : #accessing }
-SObject >> name: anObject [
-
-	name := anObject
+	| fields output thisField |
+	"Get all the fields (instance variables) of this SObject."
+	fields := self class allInstVarNames.
+	"Add them to a dict. Skip the fields if they are nil."
+	output := Dictionary new.
+	fields do: [ :field  | 
+		thisField := (field asSymbol).
+		((self perform: thisField) == nil) ifTrue: [  ] ifFalse: [
+		output at: (field asString) put: (self perform: thisField)].
+		 ].
+	
+	"Serialize the dict to JSON and return it."
+	^ STONJSON toString: output.
 ]

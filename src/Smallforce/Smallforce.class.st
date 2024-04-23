@@ -32,6 +32,16 @@ Smallforce >> accessToken: anObject [
 	accessToken := anObject
 ]
 
+{ #category : #'Salesforce-working with records' }
+Smallforce >> createRecord: anSObject [
+
+	"https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/dome_sobject_create.htm"
+
+	"Pass an SObject as an argument. Its fields will be serialized to JSON and a corresponding record will be created in your org."
+
+	self shouldBeImplemented
+]
+
 { #category : #'Salesforce-org info' }
 Smallforce >> describeGlobal [
 	"Lists the available objects and the associated metadata.
