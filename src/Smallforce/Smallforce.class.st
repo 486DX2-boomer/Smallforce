@@ -15,7 +15,8 @@ Class {
 	#instVars : [
 		'org',
 		'accessToken',
-		'version'
+		'version',
+		'response'
 	],
 	#category : #'Smallforce-Base'
 }
@@ -37,9 +38,19 @@ Smallforce >> createRecord: anSObject [
 
 	"https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/dome_sobject_create.htm"
 
+	"Use the sObject Basic Information resource to create new records. You supply the required field values in the request data, and send the request using the POST HTTP method. The response body contains the ID of the new record if the call is successful."
+
 	"Pass an SObject as an argument. Its fields will be serialized to JSON and a corresponding record will be created in your org."
 
-	self shouldBeImplemented
+	| body |
+	body := anSObject toJSON.
+
+	response := self newRequest
+		            methodPostJSON:
+		            '/services/data/' , version , '/sobjects/'
+		            , anSObject apiName , '/'
+		            body: body.
+	^ response
 ]
 
 { #category : #'Salesforce-org info' }

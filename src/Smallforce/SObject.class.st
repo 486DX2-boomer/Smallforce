@@ -37,14 +37,19 @@ SObject >> toJSON [
 	| fields output thisField |
 	"Get all the fields (instance variables) of this SObject."
 	fields := self class allInstVarNames.
-	"Add them to a dict. Skip the fields if they are nil."
+	"Add them to a dict. Skip the fields if they are nil. Also skip the apiName, as that is an external identifier and not a Salesforce object field."
 	output := Dictionary new.
-	fields do: [ :field  | 
-		thisField := (field asSymbol).
-		((self perform: thisField) == nil) ifTrue: [  ] ifFalse: [
-		output at: (field asString) put: (self perform: thisField)].
-		 ].
-	
+	fields do: [ :field | 
+		field = 'apiName'
+			ifTrue: [ "Skip this iteration to prevent apiName from being added to the JSON."
+				 ]
+			ifFalse: [ 
+				thisField := field asSymbol.
+				(self perform: thisField) == nil
+					ifTrue: [  ]
+					ifFalse: [ 
+					output at: field asString put: (self perform: thisField) ] ] ].
+
 	"Serialize the dict to JSON and return it."
-	^ STONJSON toString: output.
+	^ STONJSON toString: output
 ]
