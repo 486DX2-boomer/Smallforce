@@ -16,7 +16,8 @@ Class {
 		'org',
 		'accessToken',
 		'sfVersion',
-		'client'
+		'client',
+		'response'
 	],
 	#category : #'Smallforce-Base'
 }
@@ -86,78 +87,91 @@ SmallforceRequest >> client: anObject [
 { #category : #'rest methods' }
 SmallforceRequest >> methodDelete: anEndpointString [
 
-	| uri |
+	| uri response |
 	uri := org , anEndpointString.
 
-	^ client
-		  beOneShot;
-		  headerAt: 'Authorization' add: 'Bearer ' , accessToken;
-		  delete: uri
+	response := client
+		            beOneShot;
+		            headerAt: 'Authorization' add: 'Bearer ' , accessToken;
+		            delete: uri.
+	self validateAuthentication: response.
+	^ response
 ]
 
 { #category : #'rest methods' }
 SmallforceRequest >> methodDelete: anEndpointString withHeaders: aHeaderDict [
 
-	| uri |
+	| uri response |
 	uri := org , anEndpointString.
 
 	aHeaderDict keysAndValuesDo: [ :header :headerArgument | 
 		client headerAt: header add: headerArgument ].
 
-	^ client
-		  beOneShot;
-		  headerAt: 'Authorization' add: 'Bearer ' , accessToken;
-		  delete: uri
+	response := client
+		            beOneShot;
+		            headerAt: 'Authorization' add: 'Bearer ' , accessToken;
+		            delete: uri.
+	self validateAuthentication: response.
+	^ response
 ]
 
 { #category : #'rest methods' }
 SmallforceRequest >> methodGet: anEndpointString [
 
-	| uri |
+	| uri response |
 	uri := org , anEndpointString.
 
-	^ client
-		  beOneShot;
-		  headerAt: 'Authorization' add: 'Bearer ' , accessToken;
-		  get: uri
+	response := client
+		            beOneShot;
+		            headerAt: 'Authorization' add: 'Bearer ' , accessToken;
+		            get: uri.
+	self validateAuthentication: response.
+	^ response
 ]
 
 { #category : #'rest methods' }
 SmallforceRequest >> methodGet: anEndpointString withHeaders: aHeaderDict [
 
-	| uri |
+	| uri response |
 	uri := org , anEndpointString.
 
 	aHeaderDict keysAndValuesDo: [ :header :headerArgument | 
 		client headerAt: header add: headerArgument ].
 
-	^ client
-		  beOneShot;
-		  headerAt: 'Authorization' add: 'Bearer ' , accessToken;
-		  get: uri
+	response := client
+		            beOneShot;
+		            headerAt: 'Authorization' add: 'Bearer ' , accessToken;
+		            get: uri.
+	self validateAuthentication: response.
+	^ response
 ]
 
 { #category : #'rest methods' }
-SmallforceRequest >> methodPatch: anEndpointString body: aBodyString [ 
-	| uri |
+SmallforceRequest >> methodPatch: anEndpointString body: aBodyString [
+
+	| uri response |
 	uri := org , anEndpointString.
 
-	^ client
-		  beOneShot;
-		  headerAt: 'Authorization' add: 'Bearer ' , accessToken;
-		  patch: uri contents: aBodyString
+	response := client
+		            beOneShot;
+		            headerAt: 'Authorization' add: 'Bearer ' , accessToken;
+		            patch: uri contents: aBodyString.
+	self validateAuthentication: response.
+	^ response
 ]
 
 { #category : #'rest methods' }
 SmallforceRequest >> methodPost: anEndpointString body: aBodyString [
 
-	| uri |
+	| uri response |
 	uri := org , anEndpointString.
 
-	^ client
-		  beOneShot;
-		  headerAt: 'Authorization' add: 'Bearer ' , accessToken;
-		  post: uri contents: aBodyString
+	response := client
+		            beOneShot;
+		            headerAt: 'Authorization' add: 'Bearer ' , accessToken;
+		            post: uri contents: aBodyString.
+	self validateAuthentication: response.
+	^ response
 ]
 
 { #category : #'rest methods' }
@@ -166,10 +180,12 @@ SmallforceRequest >> methodPut: anEndpointString body: aBodyString [
 	| uri |
 	uri := org , anEndpointString.
 
-	^ client
-		  beOneShot;
-		  headerAt: 'Authorization' add: 'Bearer ' , accessToken;
-		  put: uri contents: aBodyString
+	response := client
+		            beOneShot;
+		            headerAt: 'Authorization' add: 'Bearer ' , accessToken;
+		            put: uri contents: aBodyString.
+	self validateAuthentication: response.
+	^ response
 ]
 
 { #category : #accessing }
@@ -182,6 +198,13 @@ SmallforceRequest >> org [
 SmallforceRequest >> org: anObject [
 
 	org := anObject
+]
+
+{ #category : #validation }
+SmallforceRequest >> validateAuthentication: aResponseBody [
+	"Raise an exception if the Salesforce org authentication is invalid."
+			
+	aResponseBody = '[{"message":"Session expired or invalid","errorCode":"INVALID_SESSION_ID"}]' ifTrue: [ AuthenticationFailedException new signal: 'Authentication failed: check your access token']
 ]
 
 { #category : #accessing }
