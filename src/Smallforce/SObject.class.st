@@ -1,5 +1,5 @@
 "
-I am an abstract class that represents a Salesforce object. I am designed to be subclassed to provide ""pre-fabbed"" interfaces for working with Salesforce Default Objects, such as Account or Contact. I am also designed to be subclassed by the end user so they can create interfaces for working with their own Salesforce Custom Objects.
+I am an abstract class that represents a Salesforce object. I am designed to be subclassed to provide ""pre-fabbed"" interfaces for working with Salesforce Default Objects, such as Account or Contact. I am also designed to be subclassed by the end user so they can create interfaces for working with their own Salesforce Custom Objects. SObjects should always have an apiName that corresponds to the object's API name in the Salesforce org, and the initialization of apiName is a subclass responsibility.
 "
 Class {
 	#name : #SObject,
@@ -20,6 +20,13 @@ SObject >> apiName [
 SObject >> apiName: anObject [
 
 	apiName := anObject
+]
+
+{ #category : #initialization }
+SObject >> initialize [
+	"All SObjects require an API name which should be defined on initialization by the subclass of SObject."	
+			
+	self subclassResponsibility 
 ]
 
 { #category : #serializing }

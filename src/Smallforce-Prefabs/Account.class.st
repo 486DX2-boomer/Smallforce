@@ -515,3 +515,10 @@ Account >> YearStarted: anObject [
 
 	YearStarted := anObject
 ]
+
+{ #category : #initialization }
+Account >> initialize [
+	"All SObjects require an API name which should be defined on initialization by the subclass of SObject."	
+			
+	self apiName: 'Account'
+]
