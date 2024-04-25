@@ -1,5 +1,11 @@
 "
-I am an abstract class that represents a Salesforce object. I am designed to be subclassed to provide ""pre-fabbed"" interfaces for working with Salesforce Default Objects, such as Account or Contact. I am also designed to be subclassed by the end user so they can create interfaces for working with their own Salesforce Custom Objects. SObjects should always have an apiName that corresponds to the object's API name in the Salesforce org, and the initialization of apiName is a subclass responsibility.
+I am an abstract class that represents a Salesforce object. The class SObject represents a Salesforce object; an instance of SObject represents a Salesforce record of that object. 
+
+I am designed to be subclassed to provide ""pre-fabbed"" interfaces for working with Salesforce Default Objects, such as Account or Contact. I am also designed to be subclassed by the end user so they can create interfaces for working with their own Salesforce Custom Objects. 
+
+SObjects should always have an apiName that corresponds to the object's API name in the Salesforce org, and the initialization of apiName is a subclass responsibility. 
+
+It is intended by the author that you should modify and extend subclasses of SObject to implement custom fields and your org's unique business logic.
 "
 Class {
 	#name : #SObject,
