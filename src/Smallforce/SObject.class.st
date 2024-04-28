@@ -3,7 +3,7 @@ I am an abstract class that represents a Salesforce object. The class SObject re
 
 I am designed to be subclassed to provide ""pre-fabbed"" interfaces for working with Salesforce Default Objects, such as Account or Contact. I am also designed to be subclassed by the end user so they can create interfaces for working with their own Salesforce Custom Objects. 
 
-SObjects should always have an apiName that corresponds to the object's API name in the Salesforce org, and the initialization of apiName is a subclass responsibility. 
+SObjects should always have an apiName that corresponds to the object's API name in the Salesforce org, and the initialization of apiName is a subclass responsibility. Instances of SObject can be assigned a record ID corresponding to the record's unique ID in Salesforce, which is required for some operations such as updating and deletion.
 
 It is intended by the author that you should modify and extend subclasses of SObject to implement custom fields and your org's unique business logic.
 "
@@ -11,7 +11,8 @@ Class {
 	#name : #SObject,
 	#superclass : #Object,
 	#instVars : [
-		'apiName'
+		'apiName',
+		'recordId'
 	],
 	#category : #'Smallforce-Base'
 }
@@ -35,6 +36,18 @@ SObject >> initialize [
 	self subclassResponsibility 
 ]
 
+{ #category : #accessing }
+SObject >> recordId [
+
+	^ recordId
+]
+
+{ #category : #accessing }
+SObject >> recordId: anObject [
+
+	recordId := anObject
+]
+
 { #category : #serializing }
 SObject >> toJSON [
 
@@ -46,8 +59,8 @@ SObject >> toJSON [
 	"Add them to a dict. Skip the fields if they are nil. Also skip the apiName, as that is an external identifier and not a Salesforce object field."
 	output := Dictionary new.
 	fields do: [ :field | 
-		field = 'apiName'
-			ifTrue: [ "Skip this iteration to prevent apiName from being added to the JSON."
+		field = 'apiName' | (field = 'recordId')
+			ifTrue: [ "Skip this iteration to prevent apiName or record ID from being added to the JSON."
 				 ]
 			ifFalse: [ 
 				thisField := field asSymbol.
