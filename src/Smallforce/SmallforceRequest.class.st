@@ -160,6 +160,26 @@ SmallforceRequest >> methodPatch: anEndpointString body: aBodyString [
 ]
 
 { #category : #'rest methods' }
+SmallforceRequest >> methodPatchJSON: anEndpointString body: aBodyJSON [
+
+	"The JSON body should be supplied by the caller after having serialized an SObject using its own toJSON message. "
+
+	| uri response reqBody |
+	uri := org , anEndpointString.
+	"ZnClient will not accept manually setting the Content-Type header to application/json. It must be passed a JSON ZnEntity."
+	reqBody := ZnEntity json: aBodyJSON.
+
+	response := client
+		            beOneShot;
+		            headerAt: 'Authorization' add: 'Bearer ' , accessToken;
+		            entity: reqBody;
+		            url: uri;
+		            patch.
+	self validateAuthentication: response.
+	^ response
+]
+
+{ #category : #'rest methods' }
 SmallforceRequest >> methodPost: anEndpointString body: aBodyString [
 
 	| uri response |

@@ -181,6 +181,36 @@ Provide the Salesforce version in the form of v0.xx eg v0.60"
 	^ self newRequest methodGet: '/services/data/' , salesforceVersion
 ]
 
+{ #category : #'Salesforce-working with records' }
+Smallforce >> updateRecord: anSObject withFields: aFieldsArray [
+
+	"You use the sObject Rows resource to update records. Provide the updated record information in your request data and use the PATCH method of the resource with a specific record ID to update that record. Records in a single file must be of the same object type."
+
+	"https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/dome_update_fields.htm"
+
+	"Note: this operation does not return a response on success. This is expected."
+
+	"Provide an SObject with a correct record ID assigned to it. To choose which fields to update, provide the withFields argument as an array of the field names (as strings)."
+
+	| fields body |
+	anSObject recordId ifNil: [ 
+		Error new signal: 'Error: no record ID on this SObject' ].
+
+	fields := Dictionary new.
+
+	aFieldsArray do: [ :field | 
+		fields at: field put: (anSObject perform: field asSymbol) ].
+
+	body := STONJSON toString: fields.
+
+	response := self newRequest
+		            methodPatchJSON:
+			            '/services/data/' , version , '/sobjects/'
+			            , anSObject apiName , '/' , anSObject recordId
+		            body: body.
+	^ response
+]
+
 { #category : #accessing }
 Smallforce >> version [
 
