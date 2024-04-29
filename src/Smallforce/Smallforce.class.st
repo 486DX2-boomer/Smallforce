@@ -53,6 +53,23 @@ Smallforce >> createRecord: anSObject [
 	^ response
 ]
 
+{ #category : #'Salesforce-working with records' }
+Smallforce >> deleteRecord: anSObject [
+
+	"Use the sObject Rows resource to delete records. Specify the record ID and use the DELETE method of the resource to delete a record.
+
+https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/dome_delete_record.htm"
+
+	"Provide an SObject with a correct record ID assigned to it. To choose which fields to update, provide the withFields argument as an array of the field names (as strings)."
+
+	"This operation does not return a response on success. This is expected."
+
+	response := self newRequest methodDelete:
+		            '/services/data/' , version , '/sobjects/'
+		            , anSObject apiName , '/' , anSObject recordId.
+	^ response
+]
+
 { #category : #'Salesforce-org info' }
 Smallforce >> describeGlobal [
 	"Lists the available objects and the associated metadata.
@@ -188,9 +205,9 @@ Smallforce >> updateRecord: anSObject withFields: aFieldsArray [
 
 	"https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/dome_update_fields.htm"
 
-	"Note: this operation does not return a response on success. This is expected."
-
 	"Provide an SObject with a correct record ID assigned to it. To choose which fields to update, provide the withFields argument as an array of the field names (as strings)."
+
+	"This operation does not return a response on success. This is expected."
 
 	| fields body |
 	anSObject recordId ifNil: [ 
