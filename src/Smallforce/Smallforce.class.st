@@ -54,6 +54,28 @@ Smallforce >> createRecord: anSObject [
 ]
 
 { #category : #'Salesforce-working with records' }
+Smallforce >> createRecordAndAssignId: anSObject [
+
+	"https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/dome_sobject_create.htm"
+
+	"Use the sObject Basic Information resource to create new records. You supply the required field values in the request data, and send the request using the POST HTTP method. The response body contains the ID of the new record if the call is successful."
+
+	"Pass an SObject as an argument. Its fields will be serialized to JSON and a corresponding record will be created in your org. The returned record ID of the created record will be assigned to the SObject."
+
+	| body recordId |
+	body := anSObject toJSON.
+
+	response := self newRequest
+		            methodPostJSON:
+		            '/services/data/' , version , '/sobjects/'
+		            , anSObject apiName , '/'
+		            body: body.
+	recordId := (STONJSON fromString: response) at: 'id'.
+	anSObject recordId: recordId.
+	^ response
+]
+
+{ #category : #'Salesforce-working with records' }
 Smallforce >> deleteRecord: anSObject [
 
 	"Use the sObject Rows resource to delete records. Specify the record ID and use the DELETE method of the resource to delete a record.
