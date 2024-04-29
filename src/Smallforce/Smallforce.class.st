@@ -221,7 +221,7 @@ Provide the Salesforce version in the form of v0.xx eg v0.60"
 ]
 
 { #category : #'Salesforce-working with records' }
-Smallforce >> updateRecord: anSObject withFields: aFieldsArray [
+Smallforce >> updateRecord: anSObject withFields: fieldsToUpdateArray [
 
 	"You use the sObject Rows resource to update records. Provide the updated record information in your request data and use the PATCH method of the resource with a specific record ID to update that record. Records in a single file must be of the same object type."
 
@@ -237,7 +237,7 @@ Smallforce >> updateRecord: anSObject withFields: aFieldsArray [
 
 	fields := Dictionary new.
 
-	aFieldsArray do: [ :field | 
+	fieldsToUpdateArray do: [ :field | 
 		fields at: field put: (anSObject perform: field asSymbol) ].
 
 	body := STONJSON toString: fields.
