@@ -86,6 +86,9 @@ https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/dome_de
 
 	"This operation does not return a response on success. This is expected."
 
+	anSObject noId ifTrue: [ 
+		NoIdOnRecordException new signal: 'No ID set on record.' ].
+
 	response := self newRequest methodDelete:
 		            '/services/data/' , version , '/sobjects/'
 		            , anSObject apiName , '/' , anSObject recordId.
@@ -279,8 +282,8 @@ Smallforce >> updateRecord: anSObject withFields: fieldsToUpdateArray [
 	"This operation does not return a response on success. This is expected."
 
 	| fields body |
-	anSObject recordId ifNil: [ 
-		Error new signal: 'Error: no record ID on this SObject' ].
+	anSObject noId ifTrue: [ 
+		NoIdOnRecordException new signal: 'No ID set on record.' ].
 
 	fields := Dictionary new.
 
