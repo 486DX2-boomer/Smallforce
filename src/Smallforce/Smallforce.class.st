@@ -145,6 +145,53 @@ https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/dome_so
 		  , '/describe/'
 ]
 
+{ #category : #'Salesforce-working with records' }
+Smallforce >> getFieldValues: anSObject [
+
+	"You use the GET method of the sObject Rows resource to retrieve field values from a record.
+You can specify the fields you want to retrieve with the optional fields parameter. If you specify fields that don’t exist or are inaccessible to you by field-level security, a 400 error response is returned.
+
+If you don’t use the fields parameter, the request retrieves all standard and custom fields from the record. These retrieved fields are the same as the fields returned by an sObject Describe request for the object. Fields that are inaccessible to you by field-level security are not returned in the response body."
+
+	"https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/dome_get_field_values.htm"
+
+	anSObject noId ifTrue: [ 
+		NoIdOnRecordException new signal: 'No ID set on record.' ].
+
+	response := self newRequest methodGet:
+		            '/services/data/' , version , '/sobjects/'
+		            , anSObject apiName , '/' , anSObject recordId.
+	^ response
+]
+
+{ #category : #'Salesforce-working with records' }
+Smallforce >> getFieldValues: anSObject fields: fieldsToRetrieveArray [
+
+	"You use the GET method of the sObject Rows resource to retrieve field values from a record.
+You can specify the fields you want to retrieve with the optional fields parameter. If you specify fields that don’t exist or are inaccessible to you by field-level security, a 400 error response is returned.
+
+If you don’t use the fields parameter, the request retrieves all standard and custom fields from the record. These retrieved fields are the same as the fields returned by an sObject Describe request for the object. Fields that are inaccessible to you by field-level security are not returned in the response body."
+
+	"https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/dome_get_field_values.htm"
+
+	"The fields to retrieve should be provided as an array of strings."
+
+	| fields |
+	anSObject noId ifTrue: [ 
+		NoIdOnRecordException new signal: 'No ID set on record.' ].
+
+	fields := String streamContents: [ :stream | 
+		          fieldsToRetrieveArray withIndexDo: [ :field :index | 
+			          stream << field.
+			          index < fieldsToRetrieveArray size ifTrue: [ "comma separator if not last element" 
+				          stream << ',' ] ] ].
+
+	response := self newRequest methodGet:
+		            '/services/data/' , version , '/sobjects/'
+		            , anSObject apiName , '/' , anSObject recordId , '?fields=', fields.
+	^ response
+]
+
 { #category : #'Salesforce-object metadata' }
 Smallforce >> getObjectChanges: anSObject since: aDateString [
 
