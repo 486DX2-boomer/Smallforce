@@ -94,6 +94,7 @@ SmallforceRequest >> methodDelete: anEndpointString [
 		            headerAt: 'Authorization' add: 'Bearer ' , accessToken;
 		            delete: uri.
 	self validateAuthentication: response.
+	response ifNil: [ ^ response ]. "Some responses are expected to be empty, so skip the deserialization if so."
 	^ response deserializeJSON
 ]
 
@@ -111,6 +112,7 @@ SmallforceRequest >> methodDelete: anEndpointString withHeaders: aHeaderDict [
 		            headerAt: 'Authorization' add: 'Bearer ' , accessToken;
 		            delete: uri.
 	self validateAuthentication: response.
+	response ifNil: [ ^ response ]. "Some responses are expected to be empty, so skip the deserialization if so."
 	^ response deserializeJSON
 ]
 
@@ -156,6 +158,7 @@ SmallforceRequest >> methodPatch: anEndpointString body: aBodyString [
 		            headerAt: 'Authorization' add: 'Bearer ' , accessToken;
 		            patch: uri contents: aBodyString.
 	self validateAuthentication: response.
+	response ifNil: [ ^ response ]. "Some responses are expected to be empty, so skip the deserialization if so."
 	^ response deserializeJSON
 ]
 
@@ -176,6 +179,7 @@ SmallforceRequest >> methodPatchJSON: anEndpointString body: aBodyJSON [
 		            url: uri;
 		            patch.
 	self validateAuthentication: response.
+	response ifNil: [ ^ response ]. "Some responses are expected to be empty, so skip the deserialization if so."
 	^ response deserializeJSON
 ]
 
@@ -190,6 +194,7 @@ SmallforceRequest >> methodPost: anEndpointString body: aBodyString [
 		            headerAt: 'Authorization' add: 'Bearer ' , accessToken;
 		            post: uri contents: aBodyString.
 	self validateAuthentication: response.
+	response ifNil: [ ^ response ]. "Some responses are expected to be empty, so skip the deserialization if so."
 	^ response deserializeJSON
 ]
 
@@ -210,6 +215,7 @@ SmallforceRequest >> methodPostJSON: anEndpointString body: aBodyJSON [
 		            url: uri;
 		            post.
 	self validateAuthentication: response.
+	response ifNil: [ ^ response ]. "Some responses are expected to be empty, so skip the deserialization if so."
 	^ response deserializeJSON
 ]
 
@@ -224,6 +230,7 @@ SmallforceRequest >> methodPut: anEndpointString body: aBodyString [
 		            headerAt: 'Authorization' add: 'Bearer ' , accessToken;
 		            put: uri contents: aBodyString.
 	self validateAuthentication: response.
+	response ifNil: [ ^ response ]. "Some responses are expected to be empty, so skip the deserialization if so."
 	^ response deserializeJSON
 ]
 
