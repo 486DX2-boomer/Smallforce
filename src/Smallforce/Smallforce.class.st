@@ -337,7 +337,7 @@ Smallforce >> syncToSalesforce: anSObject [
 
 	"Don't attempt to write read-only fields"
 	filteredFields := fieldsToUpdate reject: [ :fieldName | 
-		                  anSObject readOnlyFields includes: fieldName ].
+		                  anSObject excludedFields includes: fieldName ].
 
 	^ self updateRecord: anSObject withFields: filteredFields
 ]

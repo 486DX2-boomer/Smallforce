@@ -7,7 +7,7 @@ SObjects should always have an apiName that corresponds to the object's API name
 
 The instance variables of an SObject, if intended to correspond to fields on Salesforce records, should use the Field Name, **not** Field Label, of the object's fields in Salesforce. Field Names start with capital letters in Salesforce, which does break Smalltalk convention. Take a look at the included Prefabs for examples of how this looks.
 
-Some fields are read-only on Salesforce, which will cause some Smallforce messages, such as the syncToSalesforce message, to fail. You should add those fields to readOnlyFields on SObject subclasses.
+Some fields are read-only on Salesforce, while some are enabled only under certain conditions. Because of this, they can cause some Smallforce messages, such as the syncToSalesforce message, to fail. You should add those fields to excludedFields on SObject subclasses.
 
 It is intended by the author that you should modify and extend subclasses of SObject to implement custom fields and your org's unique business logic.
 "
@@ -17,7 +17,7 @@ Class {
 	#instVars : [
 		'apiName',
 		'recordId',
-		'readOnlyFields'
+		'excludedFields'
 	],
 	#category : #'Smallforce-Base'
 }
@@ -32,6 +32,18 @@ SObject >> apiName [
 SObject >> apiName: anObject [
 
 	apiName := anObject
+]
+
+{ #category : #accessing }
+SObject >> excludedFields [
+
+	^ excludedFields
+]
+
+{ #category : #accessing }
+SObject >> excludedFields: anObject [
+
+	excludedFields := anObject
 ]
 
 { #category : #testing }
@@ -61,18 +73,6 @@ SObject >> noId [
 ]
 
 { #category : #accessing }
-SObject >> readOnlyFields [
-
-	^ readOnlyFields
-]
-
-{ #category : #accessing }
-SObject >> readOnlyFields: anObject [
-
-	readOnlyFields := anObject
-]
-
-{ #category : #accessing }
 SObject >> recordId [
 
 	^ recordId
@@ -95,8 +95,8 @@ SObject >> toJSON [
 	"Add them to a dict. Skip the fields if they are nil. Also skip the apiName, as that is an external identifier and not a Salesforce object field."
 	output := Dictionary new.
 	fields do: [ :field | 
-		field = 'apiName' | (field = 'recordId')
-			ifTrue: [ "Skip this iteration to prevent apiName or record ID from being added to the JSON."
+		field = 'apiName' | (field = 'recordId') | (field = 'excludedFields')
+			ifTrue: [ "Skip this iteration to prevent apiName, record ID, or excluded fields from being added to the JSON."
 				 ]
 			ifFalse: [ 
 				thisField := field asSymbol.

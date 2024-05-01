@@ -1,47 +1,70 @@
 "
 I represent an Account object in a Salesforce org.
+
+I implement the API for business accounts, not person accounts. The difference is explained in the API reference: https://developer.salesforce.com/docs/atlas.en-us.object_reference.meta/object_reference/sforce_api_objects_account.htm
 "
 Class {
 	#name : #Account,
 	#superclass : #SObject,
 	#instVars : [
-		'Name',
+		'CreatedById',
+		'LastModifiedById',
 		'AccountNumber',
-		'OwnerID',
-		'Site',
 		'AccountSource',
-		'Active__c',
 		'AnnualRevenue',
 		'BillingAddress',
+		'BillingCity',
+		'BillingCountry',
+		'BillingCountryCode',
+		'BillingGeocodeAccuracy',
+		'BillingLatitude',
+		'BillingLongitude',
+		'BillingPostalCode',
+		'BillingState',
+		'BillingStateCode',
+		'BillingStreet',
+		'ChannelProgramLevelName',
+		'ChannelProgramName',
 		'CleanStatus',
-		'CreatedById',
-		'CustomerPriority__c',
-		'DandbCompanyId',
-		'DunsNumber',
-		'Jigsaw',
 		'Description',
-		'Tier',
-		'NumberOfEmployees',
+		'DunsNumber',
 		'Fax',
 		'Industry',
-		'LastModifiedById',
+		'IsPartner',
+		'Jigsaw',
+		'LastActivityDate',
+		'LastReferencedDate',
+		'LastViewedDate',
+		'MasterRecordId',
 		'NaicsCode',
 		'NaicsDesc',
-		'NumberofLocations__c',
+		'Name',
+		'NumberOfEmployees',
+		'OperatingHoursId',
+		'OwnerId',
 		'Ownership',
 		'ParentId',
 		'Phone',
+		'PhotoUrl',
 		'Rating',
+		'RecordTypeId',
 		'ShippingAddress',
+		'ShippingCity',
+		'ShippingCountry',
+		'ShippingCountryCode',
+		'ShippingGeocodeAccuracy',
+		'ShippingLatitude',
+		'ShippingLongitude',
+		'ShippingPostalCode',
+		'ShippingState',
+		'ShippingStateCode',
+		'ShippingStreet',
 		'Sic',
 		'SicDesc',
-		'SLA__c',
-		'SLAExpirationDate__c',
-		'SLASerialNumber__c',
+		'Site',
 		'TickerSymbol',
 		'Tradestyle',
 		'Type',
-		'UpsellOpportunity__c',
 		'Website',
 		'YearStarted'
 	],
@@ -521,8 +544,14 @@ Account >> initialize [
 
 	"All SObjects require an API name which should be defined on initialization by the subclass of SObject."
 
-	"You should define read-only fields on the corresponding Salesforce object here by adding them to readOnlyFields."
+	"You should define read-only fields on the corresponding Salesforce object here by adding them to excludedFields."
 
 	self apiName: 'Account'.
-	self readOnlyFields: #( 'CreatedById' 'LastModifiedById' )
+	self excludedFields:
+		#( 'CreatedById' 'LastModifiedById' 'BillingAddress'
+		   'BillingCountryCode' 'BillingStateCode' 'ChannelProgramLevelName'
+		   'ChannelProgramName' 'IsPartner' 'LastActivityDate'
+		   'LastModifiedById' 'LastReferencedDate' 'LastViewedDate'
+		   'MasterRecordId' 'OperatingHoursId' 'PhotoUrl' 'RecordTypeId'
+		   'ShippingAddress' 'ShippingCountryCode' 'ShippingStateCode' )
 ]
