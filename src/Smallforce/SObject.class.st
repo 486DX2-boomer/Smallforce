@@ -7,7 +7,7 @@ SObjects should always have an apiName that corresponds to the object's API name
 
 The instance variables of an SObject, if intended to correspond to fields on Salesforce records, should use the Field Name, **not** Field Label, of the object's fields in Salesforce. Field Names start with capital letters in Salesforce, which does break Smalltalk convention. Take a look at the included Prefabs for examples of how this looks.
 
-Some fields are read-only on Salesforce, which will cause some Smallforce messages, such as the syncToSalesforce message, to fail. You should add those fields to excludedFields on SObject subclasses.
+Some fields are read-only on Salesforce, which will cause some Smallforce messages, such as the syncToSalesforce message, to fail. You should add those fields to readOnlyFields on SObject subclasses.
 
 It is intended by the author that you should modify and extend subclasses of SObject to implement custom fields and your org's unique business logic.
 "
@@ -17,7 +17,7 @@ Class {
 	#instVars : [
 		'apiName',
 		'recordId',
-		'excludedFields'
+		'readOnlyFields'
 	],
 	#category : #'Smallforce-Base'
 }
@@ -34,18 +34,6 @@ SObject >> apiName: anObject [
 	apiName := anObject
 ]
 
-{ #category : #accessing }
-SObject >> excludedFields [
-
-	^ excludedFields
-]
-
-{ #category : #accessing }
-SObject >> excludedFields: anObject [
-
-	excludedFields := anObject
-]
-
 { #category : #testing }
 SObject >> hasId [
 
@@ -59,7 +47,7 @@ SObject >> hasId [
 { #category : #initialization }
 SObject >> initialize [
 	"All SObjects require an API name which should be defined on initialization by the subclass of SObject."
-	"You should define read-only fields on the corresponding Salesforce object here by adding them to excludedFields."	
+	"You should define read-only fields on the corresponding Salesforce object here by adding them to readOnlyFields."	
 			
 	self subclassResponsibility 
 ]
@@ -70,6 +58,18 @@ SObject >> noId [
 	"Return true if the recordId on this instance is not set."
 
 	self recordId ifNil: [ ^ true ] ifNotNil: [ ^ false ]
+]
+
+{ #category : #accessing }
+SObject >> readOnlyFields [
+
+	^ readOnlyFields
+]
+
+{ #category : #accessing }
+SObject >> readOnlyFields: anObject [
+
+	readOnlyFields := anObject
 ]
 
 { #category : #accessing }
