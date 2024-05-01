@@ -96,18 +96,6 @@ Account >> AccountSource: anObject [
 ]
 
 { #category : #accessing }
-Account >> Active__c [
-
-	^ Active__c
-]
-
-{ #category : #accessing }
-Account >> Active__c: anObject [
-
-	Active__c := anObject
-]
-
-{ #category : #accessing }
 Account >> AnnualRevenue [
 
 	^ AnnualRevenue
@@ -132,6 +120,150 @@ Account >> BillingAddress: anObject [
 ]
 
 { #category : #accessing }
+Account >> BillingCity [
+
+	^ BillingCity
+]
+
+{ #category : #accessing }
+Account >> BillingCity: anObject [
+
+	BillingCity := anObject
+]
+
+{ #category : #accessing }
+Account >> BillingCountry [
+
+	^ BillingCountry
+]
+
+{ #category : #accessing }
+Account >> BillingCountry: anObject [
+
+	BillingCountry := anObject
+]
+
+{ #category : #accessing }
+Account >> BillingCountryCode [
+
+	^ BillingCountryCode
+]
+
+{ #category : #accessing }
+Account >> BillingCountryCode: anObject [
+
+	BillingCountryCode := anObject
+]
+
+{ #category : #accessing }
+Account >> BillingGeocodeAccuracy [
+
+	^ BillingGeocodeAccuracy
+]
+
+{ #category : #accessing }
+Account >> BillingGeocodeAccuracy: anObject [
+
+	BillingGeocodeAccuracy := anObject
+]
+
+{ #category : #accessing }
+Account >> BillingLatitude [
+
+	^ BillingLatitude
+]
+
+{ #category : #accessing }
+Account >> BillingLatitude: anObject [
+
+	BillingLatitude := anObject
+]
+
+{ #category : #accessing }
+Account >> BillingLongitude [
+
+	^ BillingLongitude
+]
+
+{ #category : #accessing }
+Account >> BillingLongitude: anObject [
+
+	BillingLongitude := anObject
+]
+
+{ #category : #accessing }
+Account >> BillingPostalCode [
+
+	^ BillingPostalCode
+]
+
+{ #category : #accessing }
+Account >> BillingPostalCode: anObject [
+
+	BillingPostalCode := anObject
+]
+
+{ #category : #accessing }
+Account >> BillingState [
+
+	^ BillingState
+]
+
+{ #category : #accessing }
+Account >> BillingState: anObject [
+
+	BillingState := anObject
+]
+
+{ #category : #accessing }
+Account >> BillingStateCode [
+
+	^ BillingStateCode
+]
+
+{ #category : #accessing }
+Account >> BillingStateCode: anObject [
+
+	BillingStateCode := anObject
+]
+
+{ #category : #accessing }
+Account >> BillingStreet [
+
+	^ BillingStreet
+]
+
+{ #category : #accessing }
+Account >> BillingStreet: anObject [
+
+	BillingStreet := anObject
+]
+
+{ #category : #accessing }
+Account >> ChannelProgramLevelName [
+
+	^ ChannelProgramLevelName
+]
+
+{ #category : #accessing }
+Account >> ChannelProgramLevelName: anObject [
+
+	ChannelProgramLevelName := anObject
+]
+
+{ #category : #accessing }
+Account >> ChannelProgramName [
+
+	^ ChannelProgramName
+]
+
+{ #category : #accessing }
+Account >> ChannelProgramName: anObject [
+
+	ChannelProgramName := anObject
+]
+
+{ #category : #accessing }
 Account >> CleanStatus [
 
 	^ CleanStatus
@@ -153,30 +285,6 @@ Account >> CreatedById [
 Account >> CreatedById: anObject [
 
 	CreatedById := anObject
-]
-
-{ #category : #accessing }
-Account >> CustomerPriority__c [
-
-	^ CustomerPriority__c
-]
-
-{ #category : #accessing }
-Account >> CustomerPriority__c: anObject [
-
-	CustomerPriority__c := anObject
-]
-
-{ #category : #accessing }
-Account >> DandbCompanyId [
-
-	^ DandbCompanyId
-]
-
-{ #category : #accessing }
-Account >> DandbCompanyId: anObject [
-
-	DandbCompanyId := anObject
 ]
 
 { #category : #accessing }
@@ -228,6 +336,18 @@ Account >> Industry: anObject [
 ]
 
 { #category : #accessing }
+Account >> IsPartner [
+
+	^ IsPartner
+]
+
+{ #category : #accessing }
+Account >> IsPartner: anObject [
+
+	IsPartner := anObject
+]
+
+{ #category : #accessing }
 Account >> Jigsaw [
 
 	^ Jigsaw
@@ -240,6 +360,18 @@ Account >> Jigsaw: anObject [
 ]
 
 { #category : #accessing }
+Account >> LastActivityDate [
+
+	^ LastActivityDate
+]
+
+{ #category : #accessing }
+Account >> LastActivityDate: anObject [
+
+	LastActivityDate := anObject
+]
+
+{ #category : #accessing }
 Account >> LastModifiedById [
 
 	^ LastModifiedById
@@ -249,6 +381,42 @@ Account >> LastModifiedById [
 Account >> LastModifiedById: anObject [
 
 	LastModifiedById := anObject
+]
+
+{ #category : #accessing }
+Account >> LastReferencedDate [
+
+	^ LastReferencedDate
+]
+
+{ #category : #accessing }
+Account >> LastReferencedDate: anObject [
+
+	LastReferencedDate := anObject
+]
+
+{ #category : #accessing }
+Account >> LastViewedDate [
+
+	^ LastViewedDate
+]
+
+{ #category : #accessing }
+Account >> LastViewedDate: anObject [
+
+	LastViewedDate := anObject
+]
+
+{ #category : #accessing }
+Account >> MasterRecordId [
+
+	^ MasterRecordId
+]
+
+{ #category : #accessing }
+Account >> MasterRecordId: anObject [
+
+	MasterRecordId := anObject
 ]
 
 { #category : #accessing }
@@ -300,27 +468,27 @@ Account >> NumberOfEmployees: anObject [
 ]
 
 { #category : #accessing }
-Account >> NumberofLocations__c [
+Account >> OperatingHoursId [
 
-	^ NumberofLocations__c
+	^ OperatingHoursId
 ]
 
 { #category : #accessing }
-Account >> NumberofLocations__c: anObject [
+Account >> OperatingHoursId: anObject [
 
-	NumberofLocations__c := anObject
+	OperatingHoursId := anObject
 ]
 
 { #category : #accessing }
-Account >> OwnerID [
+Account >> OwnerId [
 
-	^ OwnerID
+	^ OwnerId
 ]
 
 { #category : #accessing }
-Account >> OwnerID: anObject [
+Account >> OwnerId: anObject [
 
-	OwnerID := anObject
+	OwnerId := anObject
 ]
 
 { #category : #accessing }
@@ -360,6 +528,18 @@ Account >> Phone: anObject [
 ]
 
 { #category : #accessing }
+Account >> PhotoUrl [
+
+	^ PhotoUrl
+]
+
+{ #category : #accessing }
+Account >> PhotoUrl: anObject [
+
+	PhotoUrl := anObject
+]
+
+{ #category : #accessing }
 Account >> Rating [
 
 	^ Rating
@@ -372,39 +552,15 @@ Account >> Rating: anObject [
 ]
 
 { #category : #accessing }
-Account >> SLAExpirationDate__c [
+Account >> RecordTypeId [
 
-	^ SLAExpirationDate__c
+	^ RecordTypeId
 ]
 
 { #category : #accessing }
-Account >> SLAExpirationDate__c: anObject [
+Account >> RecordTypeId: anObject [
 
-	SLAExpirationDate__c := anObject
-]
-
-{ #category : #accessing }
-Account >> SLASerialNumber__c [
-
-	^ SLASerialNumber__c
-]
-
-{ #category : #accessing }
-Account >> SLASerialNumber__c: anObject [
-
-	SLASerialNumber__c := anObject
-]
-
-{ #category : #accessing }
-Account >> SLA__c [
-
-	^ SLA__c
-]
-
-{ #category : #accessing }
-Account >> SLA__c: anObject [
-
-	SLA__c := anObject
+	RecordTypeId := anObject
 ]
 
 { #category : #accessing }
@@ -417,6 +573,126 @@ Account >> ShippingAddress [
 Account >> ShippingAddress: anObject [
 
 	ShippingAddress := anObject
+]
+
+{ #category : #accessing }
+Account >> ShippingCity [
+
+	^ ShippingCity
+]
+
+{ #category : #accessing }
+Account >> ShippingCity: anObject [
+
+	ShippingCity := anObject
+]
+
+{ #category : #accessing }
+Account >> ShippingCountry [
+
+	^ ShippingCountry
+]
+
+{ #category : #accessing }
+Account >> ShippingCountry: anObject [
+
+	ShippingCountry := anObject
+]
+
+{ #category : #accessing }
+Account >> ShippingCountryCode [
+
+	^ ShippingCountryCode
+]
+
+{ #category : #accessing }
+Account >> ShippingCountryCode: anObject [
+
+	ShippingCountryCode := anObject
+]
+
+{ #category : #accessing }
+Account >> ShippingGeocodeAccuracy [
+
+	^ ShippingGeocodeAccuracy
+]
+
+{ #category : #accessing }
+Account >> ShippingGeocodeAccuracy: anObject [
+
+	ShippingGeocodeAccuracy := anObject
+]
+
+{ #category : #accessing }
+Account >> ShippingLatitude [
+
+	^ ShippingLatitude
+]
+
+{ #category : #accessing }
+Account >> ShippingLatitude: anObject [
+
+	ShippingLatitude := anObject
+]
+
+{ #category : #accessing }
+Account >> ShippingLongitude [
+
+	^ ShippingLongitude
+]
+
+{ #category : #accessing }
+Account >> ShippingLongitude: anObject [
+
+	ShippingLongitude := anObject
+]
+
+{ #category : #accessing }
+Account >> ShippingPostalCode [
+
+	^ ShippingPostalCode
+]
+
+{ #category : #accessing }
+Account >> ShippingPostalCode: anObject [
+
+	ShippingPostalCode := anObject
+]
+
+{ #category : #accessing }
+Account >> ShippingState [
+
+	^ ShippingState
+]
+
+{ #category : #accessing }
+Account >> ShippingState: anObject [
+
+	ShippingState := anObject
+]
+
+{ #category : #accessing }
+Account >> ShippingStateCode [
+
+	^ ShippingStateCode
+]
+
+{ #category : #accessing }
+Account >> ShippingStateCode: anObject [
+
+	ShippingStateCode := anObject
+]
+
+{ #category : #accessing }
+Account >> ShippingStreet [
+
+	^ ShippingStreet
+]
+
+{ #category : #accessing }
+Account >> ShippingStreet: anObject [
+
+	ShippingStreet := anObject
 ]
 
 { #category : #accessing }
@@ -468,18 +744,6 @@ Account >> TickerSymbol: anObject [
 ]
 
 { #category : #accessing }
-Account >> Tier [
-
-	^ Tier
-]
-
-{ #category : #accessing }
-Account >> Tier: anObject [
-
-	Tier := anObject
-]
-
-{ #category : #accessing }
 Account >> Tradestyle [
 
 	^ Tradestyle
@@ -501,18 +765,6 @@ Account >> Type [
 Account >> Type: anObject [
 
 	Type := anObject
-]
-
-{ #category : #accessing }
-Account >> UpsellOpportunity__c [
-
-	^ UpsellOpportunity__c
-]
-
-{ #category : #accessing }
-Account >> UpsellOpportunity__c: anObject [
-
-	UpsellOpportunity__c := anObject
 ]
 
 { #category : #accessing }
