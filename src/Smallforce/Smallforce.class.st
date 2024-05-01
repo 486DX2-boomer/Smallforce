@@ -9,6 +9,8 @@ Smallforce is designed to mirror Salesforce's REST API as described in the docum
 
 The messages are organized in appropriate protocols according to the example documentation: getting org information, working with object metadata, working with records, and so on.
 
+The syncFromSalesforce: and syncToSalesforce: messages provide a highly intuitive way to update records between your local SObjects and the remote data in Salesforce.
+
 While the intended way to work with a Smallforce instance is to initialize it and pass SObjects to its messages, a Smallforce instance can also represent a ""connection"" to your Salesforce org. For example, you can add your custom business logic to your subclasses of SObject, and add a Smallforce as a ""connection"" instance variable to make it easier to perform record operations on your custom object.
 "
 Class {
@@ -335,7 +337,7 @@ Smallforce >> syncToSalesforce: anSObject [
 
 	"Don't attempt to write read-only fields"
 	filteredFields := fieldsToUpdate reject: [ :fieldName | 
-		                  anSObject excludedFields includes: fieldName ].
+		                  anSObject readOnlyFields includes: fieldName ].
 
 	^ self updateRecord: anSObject withFields: filteredFields
 ]
