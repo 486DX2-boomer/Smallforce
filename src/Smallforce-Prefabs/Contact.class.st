@@ -459,5 +459,5 @@ Contact >> initialize [
 	"You should define read-only fields on the corresponding Salesforce object here by adding them to readOnlyFields."
 
 	self apiName: 'Contact'.
-	self readOnlyFields: #( 'CreatedById' 'LastModifiedById' )
+	self readOnlyFields: #( 'CreatedById' 'LastModifiedById' 'DoNotCall' 'HasOptedOutOfFax' 'HasOptedOutOfEmail' 'Name' 'LastCUUpdateDate' 'MailingAddress' 'LastCURequestDate' 'OtherAddress' )
 ]
