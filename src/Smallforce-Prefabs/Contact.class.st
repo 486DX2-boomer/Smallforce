@@ -1,5 +1,5 @@
 "
-I represent an Account object in a Salesforce org.
+I represent an Contact object in a Salesforce org.
 "
 Class {
 	#name : #Contact,
