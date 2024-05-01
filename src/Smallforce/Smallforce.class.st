@@ -74,7 +74,7 @@ Smallforce >> createRecordAndAssignId: anSObject [
 		            '/services/data/' , version , '/sobjects/'
 		            , anSObject apiName , '/'
 		            body: body.
-	recordId := (STONJSON fromString: response) at: 'id'.
+	recordId := response at: 'id'.
 	anSObject recordId: recordId.
 	^ response
 ]
