@@ -296,6 +296,50 @@ Provide the Salesforce version in the form of v0.xx eg v0.60"
 	^ response
 ]
 
+{ #category : #'synchronize records' }
+Smallforce >> syncFromSalesforce: anSObject [
+
+	"Provide an SObject with a valid record ID to update all fields on the SObject with the corresponding data from Salesforce."
+
+	"Fields with capital letters are assumed to correspond to Salesforce object fields. Lowercase fields are skipped"
+
+	| fieldsToUpdate |
+	response := self getFieldValues: anSObject.
+
+	fieldsToUpdate := (anSObject class instanceVariables select: [ :field | 
+		                   field name first isUppercase ]) collect: #name.
+
+	response keysDo: [ :key | 
+		| fieldName fieldValue |
+		"Check for matching keys"
+		fieldName := fieldsToUpdate
+			             detect: [ :field | field = key asString ]
+			             ifNone: [ nil ].
+
+		"update the corresponding field on anSObject"
+		fieldName ifNotNil: [ 
+			fieldValue := response at: key.
+			anSObject perform: (fieldName , ':') asSymbol with: fieldValue ] ]
+]
+
+{ #category : #'synchronize records' }
+Smallforce >> syncToSalesforce: anSObject [
+
+	"Provide an SObject with a valid record ID to update all fields on the record in Salesforce with the corresponding data from the SObject."
+
+	"Fields with capital letters are assumed to correspond to Salesforce object fields. Lowercase fields are skipped"
+
+	| fieldsToUpdate filteredFields |
+	fieldsToUpdate := (anSObject class instanceVariables select: [ :field | 
+		                   field name first isUppercase ]) collect: #name.
+
+	"Don't attempt to write read-only fields"
+	filteredFields := fieldsToUpdate reject: [ :fieldName | 
+		                  anSObject excludedFields includes: fieldName ].
+
+	^ self updateRecord: anSObject withFields: filteredFields
+]
+
 { #category : #'Salesforce-working with records' }
 Smallforce >> updateRecord: anSObject withFields: fieldsToUpdateArray [
 
