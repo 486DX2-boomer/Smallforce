@@ -243,6 +243,37 @@ https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/dome_so
 	^ response
 ]
 
+{ #category : #'Salesforce-traversing related' }
+Smallforce >> getRelated: anSObject relationship: relationshipName [
+
+	"Traverse the relationship to retrieve the related record. This API is confusing: for custom objects you pass the relationship name with an __r suffix, not a __c suffix. For parent-to-child relationships, you also have to use the Plural Label. For standard objects you don't use the __r suffix.
+	
+	Child-to-parent example: on a custom object Officer that has a lookup field to Department, it would look like this:
+	getRelated: myOfficer relationship: 'Department__r'
+	Standard object relationships don't use the __r suffix, and look like this:
+	getRelated: myContact relationship: 'Account'
+	
+	Parent-to-child example: on a custom object Department that same relationship is traversed like this:
+	getRelated: myDepartment relationship: 'Officers__r'
+	Standard object relationships don't use the __r suffix but still use the Plural Label, and look like this:
+	getRelated: myCase relationship: 'Tasks'
+		
+	The API example is here: https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/dome_relationship_traversal.htm
+	
+	And I recommend reading the explanation of relationship names here: https://developer.salesforce.com/docs/atlas.en-us.soql_sosl.meta/soql_sosl/sforce_api_calls_soql_relationships_and_custom_objects.htm
+	
+	It might be helpful to add an instance variable to your SObject containing the relationship name if you are going to perform this operation a lot."
+
+	anSObject noId ifTrue: [ 
+		NoIdOnRecordException new signal: 'No ID set on record.' ].
+
+	response := self newRequest methodGet:
+		            '/services/data/' , version , '/sobjects/'
+		            , anSObject apiName , '/' , anSObject recordId , '/'
+		            , relationshipName.
+	^ response
+]
+
 { #category : #'Salesforce-org info' }
 Smallforce >> limits [
 
