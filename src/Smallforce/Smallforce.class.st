@@ -79,6 +79,27 @@ Smallforce >> createRecordAndAssignId: anSObject [
 	^ response
 ]
 
+{ #category : #'Salesforce-delete Lightning Experience events' }
+Smallforce >> deleteMultipleEvents: anEvent [
+
+	"Use the HTTP DELETE method to remove one or more IsRecurrence2 events in a series. You can remove a single event, all events following and including a specific event, or an entire event series."
+
+	"Delete Multiple Events or All Events from a Series
+To delete all events in a series from a specific occurrence and onwards, specify the event ID and use the DELETE method of the resource to delete a record. When calling this method, IsRecurrence2 must be true and IsRecurrence2Exclusion must be false.
+
+To delete an entire event series, specify the event ID of the first occurrence in the series and use the DELETE method of the resource to delete a record."
+
+	"https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/dome_event_series_delete.htm"
+
+	anEvent noId ifTrue: [ 
+		NoIdOnRecordException new signal: 'No ID set on record.' ].
+
+	response := self newRequest methodDelete:
+		            '/services/data/' , version , '/sobjects/'
+		            , anEvent apiName , '/' , anEvent recordId , '/'
+		            , 'fromThisEventOnwards'
+]
+
 { #category : #'Salesforce-working with records' }
 Smallforce >> deleteRecord: anSObject [
 
@@ -97,6 +118,24 @@ https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/dome_de
 		            '/services/data/' , version , '/sobjects/'
 		            , anSObject apiName , '/' , anSObject recordId.
 	^ response
+]
+
+{ #category : #'Salesforce-delete Lightning Experience events' }
+Smallforce >> deleteSingleEvent: anEvent [
+
+	"Use the HTTP DELETE method to remove one or more IsRecurrence2 events in a series. You can remove a single event, all events following and including a specific event, or an entire event series."
+
+	"Delete a Single Event in a Series
+Use the sObject Rows resource to delete event records. To delete a single occurrence in a series, specify the event ID and use the DELETE method of the resource to delete a record."
+
+	"https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/dome_event_series_delete.htm"
+
+	anEvent noId ifTrue: [ 
+		NoIdOnRecordException new signal: 'No ID set on record.' ].
+
+	response := self newRequest methodDelete:
+		            '/services/data/' , version , '/sobjects/'
+		            , anEvent apiName , '/' , anEvent recordId
 ]
 
 { #category : #'Salesforce-org info' }
