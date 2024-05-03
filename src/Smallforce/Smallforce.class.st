@@ -162,6 +162,27 @@ https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/dome_so
 	^ response
 ]
 
+{ #category : #'Salesforce-updated and deleted records' }
+Smallforce >> getDeletedRecordsOn: anSObject from: startDateAndTime to: endDateAndTime [
+
+	"Use the sObject Get Deleted resource to get a list of deleted records for the specified object. Specify the date and time range within which the records for the given object were deleted. Deleted records are written to a delete log (that is periodically purged), and will be filtered out of most operations, such as sObject Rows or Query (although QueryAll will include deleted records in results)."
+
+	"https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/dome_get_deleted.htm"
+
+	"Supply startDateAndTime and endDateAndTime as DateAndTime objects."
+
+	"Example: get list of Accounts deleted in the last hour: 
+	sf getDeletedRecordsOn: (Account new) from: (DateAndTime now - 3600) to: (DateAnDTime now)."
+
+	response := self newRequest methodGet:
+		            '/services/data/' , version , '/sobjects/'
+		            , anSObject apiName , '/deleted/' , '?start='
+		            , startDateAndTime asString urlEncoded , '&end='
+		            , endDateAndTime asString urlEncoded.
+
+	^ response
+]
+
 { #category : #'Salesforce-working with records' }
 Smallforce >> getFieldValues: anSObject [
 
@@ -271,6 +292,27 @@ Smallforce >> getRelated: anSObject relationship: relationshipName [
 		            '/services/data/' , version , '/sobjects/'
 		            , anSObject apiName , '/' , anSObject recordId , '/'
 		            , relationshipName.
+	^ response
+]
+
+{ #category : #'Salesforce-updated and deleted records' }
+Smallforce >> getUpdatedRecordsOn: anSObject from: startDateAndTime to: endDateAndTime [
+
+	"Use the sObject Get Updated resource to get a list of updated (modified or added) records for the specified object. Specify the date and time range within which the records for the given object were updated."
+
+	"https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/dome_get_updated.htm"
+
+	"Supply startDateAndTime and endDateAndTime as DateAndTime objects."
+
+	"Example: get list of Accounts updated in the last hour: 
+	sf getUpdatedRecordsOn: (Account new) from: (DateAndTime now - 3600) to: (DateAndTime now)."
+
+	response := self newRequest methodGet:
+		            '/services/data/' , version , '/sobjects/'
+		            , anSObject apiName , '/updated/' , '?start='
+		            , startDateAndTime asString urlEncoded , '&end='
+		            , endDateAndTime asString urlEncoded.
+
 	^ response
 ]
 
