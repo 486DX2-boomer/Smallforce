@@ -201,6 +201,50 @@ https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/dome_so
 	^ response
 ]
 
+{ #category : #'Salesforce-searches and queries' }
+Smallforce >> executeQueryRaw: aString [
+
+	"Use the Query resource to execute a SOQL query that returns all the results in a single response, or if needed, returns part of the results and a locator used to retrieve the remaining results."
+
+	"https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/dome_query.htm"
+
+	"This message accepts a normal string and submits it as an SOQL query. This is a convenience method for testing or for very simple SOQL queries."
+
+	"An SOQLQuery class to build complex queries was planned, but I wasn't smart enough to write it. If you want to write it for me, please do so. In the meantime, I recommend https://lwc-soql-builder.github.io/"
+
+	response := self newRequest methodGet:
+		            '/services/data/' , version , '/query/' , '?q='
+		            , aString urlEncoded.
+
+	^ response
+]
+
+{ #category : #'Salesforce-searches and queries' }
+Smallforce >> executeQueryRawWithDeleted: aString [
+
+	"This is the same as executeQueryRaw, but uses queryAll to include deleted records."
+
+	"https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/dome_queryall.htm"
+
+	response := self newRequest methodGet:
+		            '/services/data/' , version , '/queryAll/' , '?q='
+		            , aString urlEncoded.
+
+	^ response
+]
+
+{ #category : #'Salesforce-searches and queries' }
+Smallforce >> getDefaultSearchScopeAndOrder [
+
+	"Use the Search Scope and Order resource to retrieve the default global search scope and order for the logged-in user, including any pinned objects in the user’s search results page."
+
+	"https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/dome_retrieve_search_scope_order.htm"
+
+	response := self newRequest methodGet:
+		            '/services/data/' , version , '/search/' , 'scopeOrder'.
+	^ response
+]
+
 { #category : #'Salesforce-updated and deleted records' }
 Smallforce >> getDeletedRecordsOn: anSObject from: startDateAndTime to: endDateAndTime [
 
@@ -334,6 +378,66 @@ Smallforce >> getRelated: anSObject relationship: relationshipName [
 	^ response
 ]
 
+{ #category : #'Salesforce-searches and queries' }
+Smallforce >> getSearchResultLayoutForObject: anSObject [
+
+	"Use the Search Result Layouts resource to retrieve the search result layout configuration for each object specified in the query string."
+
+	"https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/dome_retrieve_search_layouts.htm"
+
+	"You can pass an SObject to look up its search result layout. To search multiple objects, use getSearchResultLayoutForObjects."
+
+	"Example: sf getSearchResultLayoutForObject: (Account new)"
+
+	response := self newRequest methodGet:
+		            '/services/data/' , version , '/' , 'search' , '/'
+		            , 'layout' , '/' , '?q=' , anSObject apiName.
+	^ response
+]
+
+{ #category : #'Salesforce-searches and queries' }
+Smallforce >> getSearchResultLayoutForObjectFromAPIName: aString [
+
+	"Use the Search Result Layouts resource to retrieve the search result layout configuration for each object specified in the query string."
+
+	"https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/dome_retrieve_search_layouts.htm"
+
+	"Instead of passing an SObject, you can supply an API name as a string."
+
+	"Example: sf getSearchResultLayoutForObject: 'Account'"
+
+	response := self newRequest methodGet:
+		            '/services/data/' , version , '/' , 'search' , '/'
+		            , 'layout' , '/' , '?q=' , aString.
+	^ response
+]
+
+{ #category : #'Salesforce-searches and queries' }
+Smallforce >> getSearchResultLayoutForObjectsFromArray: anArray [
+
+	"Use the Search Result Layouts resource to retrieve the search result layout configuration for each object specified in the query string."
+
+	"https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/dome_retrieve_search_layouts.htm"
+
+	"You can pass an array of SObjects, an array of api name strings, or a mix of both."
+
+	"sf getSearchResultLayoutForObjectsFromArray: { myAccount. myContact. 'Officer__c' }."
+
+	| searchString |
+	searchString := String new.
+
+	anArray withIndexDo: [ :e :index | 
+		(e isKindOf: SObject)
+			ifTrue: [ searchString := searchString , e apiName ]
+			ifFalse: [ searchString := searchString , e ].
+		index < anArray size ifTrue: [ searchString := searchString , ',' ] ].
+
+	response := self newRequest methodGet:
+		            '/services/data/' , version , '/' , 'search' , '/'
+		            , 'layout' , '/' , '?q=' , searchString.
+	^ response
+]
+
 { #category : #'Salesforce-updated and deleted records' }
 Smallforce >> getUpdatedRecordsOn: anSObject from: startDateAndTime to: endDateAndTime [
 
@@ -406,6 +510,26 @@ Provide the Salesforce version in the form of v0.xx eg v0.60"
 
 	response := self newRequest methodGet:
 		            '/services/data/' , salesforceVersion.
+
+	^ response
+]
+
+{ #category : #'Salesforce-searches and queries' }
+Smallforce >> searchString: aString [
+
+	"Use the Search resource to execute a SOSL search ..."
+
+	"https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/dome_search.htm"
+	
+	"The string search term must be wrapped in {braces} and URL encoded:"
+	| searchString |
+	searchString := String new.
+	searchString := '{', aString, '}'.
+	searchString := searchString urlEncoded.
+
+	response := self newRequest methodGet:
+		            '/services/data/' , version , '/search/' , '?q=FIND+'
+		            , searchString.
 
 	^ response
 ]
@@ -512,5 +636,44 @@ https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/resourc
 
 	response := self newRequest methodGet: '/services/data/'.
 
+	^ response
+]
+
+{ #category : #'Salesforce-searches and queries' }
+Smallforce >> viewRelevantItems [
+
+	"Use the Relevant Items resource to get a list of relevant records."
+
+	"https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/dome_get_relevant_items.htm"
+
+	response := self newRequest methodGet:
+		            '/services/data/' , version , '/' , 'sobjects' , '/'
+		            , 'relevantItems'.
+	^ response
+]
+
+{ #category : #'Salesforce-searches and queries' }
+Smallforce >> viewRelevantItemsFilterByObjects: anArray [
+
+	"Use the Relevant Items resource to get a list of relevant records."
+
+	"https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/dome_get_relevant_items.htm"
+
+	"Pass an array of SObjects, API names as strings, or both, to filter the results by those objects."
+
+	"Example: sf viewRelevantItemsFilterByObjects: { myAccount. myContact. 'Officer__c' }."
+
+	| searchString |
+	searchString := String new.
+
+	anArray withIndexDo: [ :e :index | 
+		(e isKindOf: SObject)
+			ifTrue: [ searchString := searchString , e apiName ]
+			ifFalse: [ searchString := searchString , e ].
+		index < anArray size ifTrue: [ searchString := searchString , ',' ] ].
+
+	response := self newRequest methodGet:
+		            '/services/data/' , version , '/' , 'sobjects' , '/'
+		            , 'relevantItems' , '?sobjects=' , searchString.
 	^ response
 ]
