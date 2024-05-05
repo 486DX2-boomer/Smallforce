@@ -544,11 +544,11 @@ Smallforce >> searchString: aString [
 	"Use the Search resource to execute a SOSL search ..."
 
 	"https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/dome_search.htm"
-	
-	"The string search term must be wrapped in {braces} and URL encoded:"
+
 	| searchString |
 	searchString := String new.
-	searchString := '{', aString, '}'.
+	"String search term must be wrapped in {braces} and URL encoded"
+	searchString := '{' , aString , '}'.
 	searchString := searchString urlEncoded.
 
 	response := self newRequest methodGet:
