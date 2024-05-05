@@ -459,6 +459,14 @@ Smallforce >> getUpdatedRecordsOn: anSObject from: startDateAndTime to: endDateA
 	^ response
 ]
 
+{ #category : #accessing }
+Smallforce >> lastResponse [
+
+	"Access the response from the most recent request."
+
+	^ response
+]
+
 { #category : #'Salesforce-org info' }
 Smallforce >> limits [
 
