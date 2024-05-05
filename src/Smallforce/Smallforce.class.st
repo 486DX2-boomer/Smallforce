@@ -79,6 +79,27 @@ Smallforce >> createRecordAndAssignId: anSObject [
 	^ response
 ]
 
+{ #category : #'helper methods' }
+Smallforce >> createSearchStringFromArray: anArray [
+
+	"Construct a search string from an array containing SObjects, strings, or both."
+
+	"Example: 
+	myAccount := Account new.
+	myContact := Contact new.
+	self searchStringFromArray: { myAccount. myContact. 'Lead' }"
+
+	| searchString |
+	searchString := String new.
+
+	anArray withIndexDo: [ :e :index | 
+		(e isKindOf: SObject)
+			ifTrue: [ searchString := searchString , e apiName ]
+			ifFalse: [ searchString := searchString , e ].
+		index < anArray size ifTrue: [ searchString := searchString , ',' ] ].
+	^ searchString
+]
+
 { #category : #'Salesforce-delete Lightning Experience events' }
 Smallforce >> deleteMultipleEvents: anEvent [
 
@@ -425,12 +446,7 @@ Smallforce >> getSearchResultLayoutForObjectsFromArray: anArray [
 
 	| searchString |
 	searchString := String new.
-
-	anArray withIndexDo: [ :e :index | 
-		(e isKindOf: SObject)
-			ifTrue: [ searchString := searchString , e apiName ]
-			ifFalse: [ searchString := searchString , e ].
-		index < anArray size ifTrue: [ searchString := searchString , ',' ] ].
+	searchString := self createSearchStringFromArray: anArray.
 
 	response := self newRequest methodGet:
 		            '/services/data/' , version , '/' , 'search' , '/'
@@ -672,14 +688,7 @@ Smallforce >> viewRelevantItemsFilterByObjects: anArray [
 	"Example: sf viewRelevantItemsFilterByObjects: { myAccount. myContact. 'Officer__c' }."
 
 	| searchString |
-	searchString := String new.
-
-	anArray withIndexDo: [ :e :index | 
-		(e isKindOf: SObject)
-			ifTrue: [ searchString := searchString , e apiName ]
-			ifFalse: [ searchString := searchString , e ].
-		index < anArray size ifTrue: [ searchString := searchString , ',' ] ].
-
+	searchString := self createSearchStringFromArray: anArray.
 	response := self newRequest methodGet:
 		            '/services/data/' , version , '/' , 'sobjects' , '/'
 		            , 'relevantItems' , '?sobjects=' , searchString.
