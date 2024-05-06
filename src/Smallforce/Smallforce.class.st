@@ -656,6 +656,35 @@ https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/resourc
 	^ response
 ]
 
+{ #category : #'Salesforce-recently viewed' }
+Smallforce >> viewRecentlyViewed [
+
+	"Use the Recently Viewed Items resource to get a list of recently viewed records."
+	
+	"https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/dome_see_recently_viewed.htm"
+
+	response := self newRequest methodGet:
+		            '/services/data/' , version , '/recent'.
+
+	^ response
+]
+
+{ #category : #'Salesforce-recently viewed' }
+Smallforce >> viewRecentlyViewedLimit: aNumber [
+
+	"Use the Recently Viewed Items resource to get a list of recently viewed records."
+
+	"https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/dome_see_recently_viewed.htm"
+
+	"Pass a number to limit the number of records returned."
+
+	response := self newRequest methodGet:
+		            '/services/data/' , version , '/' , 'recent' , '/'
+		            , '?limit=' , aNumber asString.
+
+	^ response
+]
+
 { #category : #'Salesforce-searches and queries' }
 Smallforce >> viewRelevantItems [
 
