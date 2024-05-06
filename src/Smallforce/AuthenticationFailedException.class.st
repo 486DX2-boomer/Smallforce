@@ -9,3 +9,9 @@ Class {
 	#superclass : #Error,
 	#category : #'Smallforce-Exceptions'
 }
+
+{ #category : #accessing }
+AuthenticationFailedException class >> raise [
+
+	self signal: 'Authentication failed: check your access token'
+]

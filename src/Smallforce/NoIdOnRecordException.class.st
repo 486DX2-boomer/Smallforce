@@ -6,3 +6,9 @@ Class {
 	#superclass : #Error,
 	#category : #'Smallforce-Exceptions'
 }
+
+{ #category : #accessing }
+NoIdOnRecordException class >> raise [
+
+	self signal: 'No ID set on record.'
+]

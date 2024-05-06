@@ -112,8 +112,7 @@ To delete an entire event series, specify the event ID of the first occurrence i
 
 	"https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/dome_event_series_delete.htm"
 
-	anEvent noId ifTrue: [ 
-		NoIdOnRecordException new signal: 'No ID set on record.' ].
+	anEvent noId ifTrue: [ NoIdOnRecordException raise ].
 
 	response := self newRequest methodDelete:
 		            '/services/data/' , version , '/sobjects/'
@@ -132,8 +131,7 @@ https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/dome_de
 
 	"This operation does not return a response on success. This is expected."
 
-	anSObject noId ifTrue: [ 
-		NoIdOnRecordException new signal: 'No ID set on record.' ].
+	anSObject noId ifTrue: [ NoIdOnRecordException raise ].
 
 	response := self newRequest methodDelete:
 		            '/services/data/' , version , '/sobjects/'
@@ -151,8 +149,7 @@ Use the sObject Rows resource to delete event records. To delete a single occurr
 
 	"https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/dome_event_series_delete.htm"
 
-	anEvent noId ifTrue: [ 
-		NoIdOnRecordException new signal: 'No ID set on record.' ].
+	anEvent noId ifTrue: [ NoIdOnRecordException raise ].
 
 	response := self newRequest methodDelete:
 		            '/services/data/' , version , '/sobjects/'
@@ -297,8 +294,7 @@ If you don’t use the fields parameter, the request retrieves all standard and 
 
 	"https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/dome_get_field_values.htm"
 
-	anSObject noId ifTrue: [ 
-		NoIdOnRecordException new signal: 'No ID set on record.' ].
+	anSObject noId ifTrue: [ NoIdOnRecordException raise ].
 
 	response := self newRequest methodGet:
 		            '/services/data/' , version , '/sobjects/'
@@ -319,8 +315,7 @@ If you don’t use the fields parameter, the request retrieves all standard and 
 	"The fields to retrieve should be provided as an array of strings."
 
 	| fields |
-	anSObject noId ifTrue: [ 
-		NoIdOnRecordException new signal: 'No ID set on record.' ].
+	anSObject noId ifTrue: [ NoIdOnRecordException raise ].
 
 	fields := String streamContents: [ :stream | 
 		          fieldsToRetrieveArray withIndexDo: [ :field :index | 
@@ -389,8 +384,7 @@ Smallforce >> getRelated: anSObject relationship: relationshipName [
 	
 	It might be helpful to add an instance variable to your SObject containing the relationship name if you are going to perform this operation a lot."
 
-	anSObject noId ifTrue: [ 
-		NoIdOnRecordException new signal: 'No ID set on record.' ].
+	anSObject noId ifTrue: [ NoIdOnRecordException raise ].
 
 	response := self newRequest methodGet:
 		            '/services/data/' , version , '/sobjects/'
@@ -614,8 +608,7 @@ Smallforce >> updateRecord: anSObject withFields: fieldsToUpdateArray [
 	"This operation does not return a response on success. This is expected."
 
 	| fields body |
-	anSObject noId ifTrue: [ 
-		NoIdOnRecordException new signal: 'No ID set on record.' ].
+	anSObject noId ifTrue: [ NoIdOnRecordException raise ].
 
 	fields := Dictionary new.
 

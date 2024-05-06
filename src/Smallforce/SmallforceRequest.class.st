@@ -248,9 +248,18 @@ SmallforceRequest >> org: anObject [
 
 { #category : #validation }
 SmallforceRequest >> validateAuthentication: aResponseBody [
+
 	"Raise an exception if the Salesforce org authentication is invalid."
-			
-	aResponseBody = '[{"message":"Session expired or invalid","errorCode":"INVALID_SESSION_ID"}]' ifTrue: [ AuthenticationFailedException new signal: 'Authentication failed: check your access token']
+
+	aResponseBody
+	=
+	'[{"message":"Session expired or invalid","errorCode":"INVALID_SESSION_ID"}]' 
+		ifTrue: [ AuthenticationFailedException raise ].
+
+	aResponseBody
+	=
+	'[{"message":"INVALID_AUTH_HEADER","errorCode":"INVALID_AUTH_HEADER"}]' 
+		ifTrue: [ AuthenticationFailedException raise ]
 ]
 
 { #category : #accessing }
