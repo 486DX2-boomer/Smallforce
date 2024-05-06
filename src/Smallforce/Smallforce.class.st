@@ -37,6 +37,30 @@ Smallforce >> accessToken: anObject [
 	accessToken := anObject
 ]
 
+{ #category : #'Salesforce-manage passwords' }
+Smallforce >> changePasswordForUser: anSObject to: aString [
+
+	"Use the sObject User Password resource to set, reset, or get information about a user password."
+
+	"https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/dome_sobject_user_password.htm"
+
+	"Pass a User prefab with a valid record ID and the desired password."
+
+	| body passwordJSON |
+	anSObject noId ifTrue: [ NoIdOnRecordException raise ].
+
+	passwordJSON := Dictionary new.
+	passwordJSON at: 'NewPassword' put: aString.
+	body := STONJSON toString: passwordJSON.
+
+	response := self newRequest
+		            methodPostJSON:
+			            '/services/data/' , version , '/sobjects/'
+			            , anSObject apiName , '/' , anSObject recordId , '/'
+			            , 'password'
+		            body: body
+]
+
 { #category : #'Salesforce-working with records' }
 Smallforce >> createRecord: anSObject [
 
@@ -363,6 +387,24 @@ https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/dome_so
 	^ response
 ]
 
+{ #category : #'Salesforce-manage passwords' }
+Smallforce >> getPasswordExpirationStatusForUser: anSObject [
+
+	"Use the sObject User Password resource to set, reset, or get information about a user password."
+
+	"https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/dome_sobject_user_password.htm"
+
+	"Create a User prefab with a valid record ID and pass it as the argument."
+
+	anSObject noId ifTrue: [ NoIdOnRecordException raise ].
+
+	response := self newRequest methodGet:
+		            '/services/data/' , version , '/sobjects/'
+		            , anSObject apiName , '/' , anSObject recordId , '/'
+		            , 'password'.
+	^ response
+]
+
 { #category : #'Salesforce-traversing related' }
 Smallforce >> getRelated: anSObject relationship: relationshipName [
 
@@ -504,6 +546,24 @@ Smallforce >> org [
 Smallforce >> org: anObject [
 
 	org := anObject
+]
+
+{ #category : #'Salesforce-manage passwords' }
+Smallforce >> resetPasswordForUser: anSObject [
+
+	"Use the sObject User Password resource to set, reset, or get information about a user password."
+
+	"https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/dome_sobject_user_password.htm"
+
+	"Create a User prefab with a valid record ID and pass it as the argument."
+
+	anSObject noId ifTrue: [ NoIdOnRecordException raise ].
+
+	response := self newRequest methodDelete:
+		            '/services/data/' , version , '/sobjects/'
+		            , anSObject apiName , '/' , anSObject recordId , '/'
+		            , 'password'.
+	^ response
 ]
 
 { #category : #'Salesforce-org info' }
