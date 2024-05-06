@@ -731,7 +731,7 @@ Event >> initialize [
 
 	"All SObjects require an API name which should be defined on initialization by the subclass of SObject."
 
-	"You should define read-only fields on the corresponding Salesforce object here by adding them to readOnlyFields."
+	"You should define read-only fields on the corresponding Salesforce object here by adding them to excludedFields."
 
 	self apiName: 'Event'.
 	self excludedFields:
