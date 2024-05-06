@@ -63,7 +63,7 @@ Class {
 		'WhoCount',
 		'WhoId'
 	],
-	#category : #'Smallforce-Prefabs'
+	#category : #'Smallforce-Prefabs-Base'
 }
 
 { #category : #accessing }

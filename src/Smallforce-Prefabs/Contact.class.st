@@ -75,7 +75,7 @@ Class {
 		'Suffix',
 		'Title'
 	],
-	#category : #'Smallforce-Prefabs'
+	#category : #'Smallforce-Prefabs-Base'
 }
 
 { #category : #accessing }
