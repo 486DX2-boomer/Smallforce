@@ -223,7 +223,7 @@ https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/dome_so
 ]
 
 { #category : #'Salesforce-searches and queries' }
-Smallforce >> executeQueryRaw: aString [
+Smallforce >> executeQuery: aString [
 
 	"Use the Query resource to execute a SOQL query that returns all the results in a single response, or if needed, returns part of the results and a locator used to retrieve the remaining results."
 
@@ -241,9 +241,9 @@ Smallforce >> executeQueryRaw: aString [
 ]
 
 { #category : #'Salesforce-searches and queries' }
-Smallforce >> executeQueryRawWithDeleted: aString [
+Smallforce >> executeQueryWithDeleted: aString [
 
-	"This is the same as executeQueryRaw, but uses queryAll to include deleted records."
+	"This is the same as executeQuery, but uses queryAll to include deleted records."
 
 	"https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/dome_queryall.htm"
 
