@@ -528,8 +528,8 @@ Task >> initialize [
 	self apiName: 'Task'.
 	self excludedFields:
 		#( 'AccountId' 'CompletedDateTime' 'ConnectionReceivedId'
-		   'ConnectionSentId' 'IsArchived' 'IsClosed' 'IsDeleted'
-		   'IsHighPriority' 'IsRecurrence' 'IsVisibleInSelfService'
-		   'RecurrenceActivityId' 'RecurrenceTimeZonSidKey'
-		   'TaskSubtype' 'TaskWhoIds' 'Type' 'WhatCount' 'WhoCount' )
+		   'ConnectionSentId' 'IsArchived' 'IsClosed' 'IsHighPriority'
+		   'IsRecurrence' 'IsVisibleInSelfService' 'RecurrenceActivityId'
+		   'RecurrenceTimeZonSidKey' 'TaskSubtype' 'TaskWhoIds' 'Type'
+		   'WhatCount' 'WhoCount' )
 ]

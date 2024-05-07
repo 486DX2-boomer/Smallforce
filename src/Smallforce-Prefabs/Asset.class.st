@@ -893,7 +893,7 @@ Asset >> initialize [
 	self excludedFields:
 		#( 'Address' 'AssetLevel' 'CurrentLifecycleEndDate'
 		   'CurrentMrr' 'CurrentQuantityCurrentAmount'
-		   'HasLifecycleManagement' 'IsDeleted' 'LifecycleEndDate'
-		   'LifecycleStartDate' 'ManufactureDate' 'ProductCode'
-		   'RootAssetId' 'StockKeepingUnit' 'TotalLifecycleAmount' )
+		   'HasLifecycleManagement' 'LifecycleEndDate' 'LifecycleStartDate'
+		   'ManufactureDate' 'ProductCode' 'RootAssetId' 'StockKeepingUnit'
+		   'TotalLifecycleAmount' )
 ]
