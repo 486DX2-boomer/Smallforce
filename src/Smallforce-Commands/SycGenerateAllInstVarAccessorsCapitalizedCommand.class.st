@@ -1,14 +1,14 @@
 "
-I am a command to generate accessors for all inst vars of given classes, with uppercase names.
+I am a command to generate accessors for all inst vars of given classes, with capitalized names.
 "
 Class {
-	#name : #SycGenerateAllInstVarAccessorsUppercaseCommand,
+	#name : #SycGenerateAllInstVarAccessorsCapitalizedCommand,
 	#superclass : #SycGenerateAllInstVarAccessorsCommand,
 	#category : #'Smallforce-Commands'
 }
 
 { #category : #converting }
-SycGenerateAllInstVarAccessorsUppercaseCommand >> asRefactorings [
+SycGenerateAllInstVarAccessorsCapitalizedCommand >> asRefactorings [
 
 	| refactorings |
 	refactorings := classes flatCollect: [:eachClass |
@@ -20,6 +20,6 @@ SycGenerateAllInstVarAccessorsUppercaseCommand >> asRefactorings [
 ]
 
 { #category : #accessing }
-SycGenerateAllInstVarAccessorsUppercaseCommand >> defaultMenuItemName [
+SycGenerateAllInstVarAccessorsCapitalizedCommand >> defaultMenuItemName [
 	^'Generate accessors - capitalized'
 ]
