@@ -9,7 +9,7 @@ The instance variables of an SObject, if intended to correspond to fields on Sal
 
 The break in convention is necessary because Smallforce dynamically maps SObjects to and from Salesforce records based on instance variable names and accessor names in a case-sensitive way. When you are implementing custom business logic on an SObject, you should implement message names with the camelCase convention. Smallforce will not attempt to serialize messages that begin with lowercase letters, or fields that are defined in the excludedFields variable.
 
-Some fields are read-only on Salesforce, while some are enabled only under certain conditions. Because of this, they can cause some Smallforce messages, such as the syncToSalesforce message, to fail. You should add those fields to excludedFields on SObject subclasses. Fields added to excludedFields are not sent in requests that attempt to update Salesforce records, although they are set on local SObjects, as in the case of CreatedById and LastModifiedById.
+Some fields are read-only on Salesforce, while some are enabled only under certain conditions. Because of this, they can cause some Smallforce messages, such as the syncToSalesforce message, to fail. You should add those fields to excludedFields on SObject subclasses. Fields added to excludedFields are not sent in requests that attempt to update Salesforce records, but will be set on local SObjects if they are readable from Salesforce.
 
 It is intended by the author that you should modify and extend subclasses of SObject to implement custom fields and your org's unique business logic.
 "
