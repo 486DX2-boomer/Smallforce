@@ -7,8 +7,6 @@ Class {
 	#name : #Contact,
 	#superclass : #SObject,
 	#instVars : [
-		'CreatedById',
-		'LastModifiedById',
 		'AccountId',
 		'AssistantName',
 		'AssistantPhone',
@@ -160,18 +158,6 @@ Contact >> ConnectionReceivedId [
 Contact >> ConnectionReceivedId: anObject [
 
 	ConnectionReceivedId := anObject
-]
-
-{ #category : #accessing }
-Contact >> CreatedById [
-
-	^ CreatedById
-]
-
-{ #category : #accessing }
-Contact >> CreatedById: anObject [
-
-	CreatedById := anObject
 ]
 
 { #category : #accessing }
@@ -400,18 +386,6 @@ Contact >> LastActivityDate [
 Contact >> LastActivityDate: anObject [
 
 	LastActivityDate := anObject
-]
-
-{ #category : #accessing }
-Contact >> LastModifiedById [
-
-	^ LastModifiedById
-]
-
-{ #category : #accessing }
-Contact >> LastModifiedById: anObject [
-
-	LastModifiedById := anObject
 ]
 
 { #category : #accessing }

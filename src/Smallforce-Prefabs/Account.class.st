@@ -7,8 +7,6 @@ Class {
 	#name : #Account,
 	#superclass : #SObject,
 	#instVars : [
-		'CreatedById',
-		'LastModifiedById',
 		'AccountNumber',
 		'AccountSource',
 		'AnnualRevenue',
@@ -276,18 +274,6 @@ Account >> CleanStatus: anObject [
 ]
 
 { #category : #accessing }
-Account >> CreatedById [
-
-	^ CreatedById
-]
-
-{ #category : #accessing }
-Account >> CreatedById: anObject [
-
-	CreatedById := anObject
-]
-
-{ #category : #accessing }
 Account >> Description [
 
 	^ Description
@@ -369,18 +355,6 @@ Account >> LastActivityDate [
 Account >> LastActivityDate: anObject [
 
 	LastActivityDate := anObject
-]
-
-{ #category : #accessing }
-Account >> LastModifiedById [
-
-	^ LastModifiedById
-]
-
-{ #category : #accessing }
-Account >> LastModifiedById: anObject [
-
-	LastModifiedById := anObject
 ]
 
 { #category : #accessing }

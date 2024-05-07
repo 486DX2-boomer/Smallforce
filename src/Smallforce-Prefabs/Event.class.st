@@ -7,8 +7,6 @@ Class {
 	#name : #Event,
 	#superclass : #SObject,
 	#instVars : [
-		'CreatedById',
-		'LastModifiedById',
 		'AcceptedEventInviteeIds',
 		'AccountId',
 		'ActivityDate',
@@ -124,18 +122,6 @@ Event >> ClientGuid [
 Event >> ClientGuid: anObject [
 
 	ClientGuid := anObject
-]
-
-{ #category : #accessing }
-Event >> CreatedById [
-
-	^ CreatedById
-]
-
-{ #category : #accessing }
-Event >> CreatedById: anObject [
-
-	CreatedById := anObject
 ]
 
 { #category : #accessing }
@@ -400,18 +386,6 @@ Event >> IsVisibleInSelfService [
 Event >> IsVisibleInSelfService: anObject [
 
 	IsVisibleInSelfService := anObject
-]
-
-{ #category : #accessing }
-Event >> LastModifiedById [
-
-	^ LastModifiedById
-]
-
-{ #category : #accessing }
-Event >> LastModifiedById: anObject [
-
-	LastModifiedById := anObject
 ]
 
 { #category : #accessing }
