@@ -199,15 +199,15 @@ And in Salesforce, the Public Relations Risk field is updated just as expected:
 
 In our org, we have a Custom Object called Officer with the API name Officer__c. This represents "a law enforcement officer who is employed by a Department", another Custom Object. In Salesforce, I'll go to Setup > Object Manager > Officer > Fields & Relationships.
 
-```
-FIELD LABEL 		FIELD NAME 			DATA TYPE 			CONTROLLING FIELD	INDEXED
-Created By			CreatedById			Lookup(User)							False	
-Department			Department__c		Lookup(Department)						True	
-Last Modified By	LastModifiedById	Lookup(User)							False	
-Officer Name		Name				Text(80)								True	
-Owner				OwnerId				Lookup(User,Group)						True	
-Rank				Rank__c				Picklist								False
-```
+| FIELD LABEL       | FIELD NAME        | DATA TYPE          | CONTROLLING FIELD   | INDEXED |
+|-------------------|-------------------|--------------------|----------------------|---------|
+| Created By        | CreatedById       | Lookup(User)       |                      | False   |
+| Department        | Department__c     | Lookup(Department)|                      | True    |
+| Last Modified By  | LastModifiedById  | Lookup(User)       |                      | False   |
+| Officer Name      | Name              | Text(80)           |                      | True    |
+| Owner             | OwnerId           | Lookup(User,Group) |                      | True    |
+| Rank              | Rank__c           | Picklist           |                      | False   |
+
 
 We subclass SObject and define the instance variables to correspond to the field names.
 
