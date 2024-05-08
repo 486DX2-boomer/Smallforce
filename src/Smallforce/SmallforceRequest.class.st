@@ -51,6 +51,14 @@ SmallforceRequest class >> newWithOrg: anOrg accessToken: aToken version: aSales
 	
 ]
 
+{ #category : #converting }
+SmallforceRequest class >> stonMarshal: aJSONByteString [
+
+	"Convert a JSON response from a SmallforceRequest to STON."
+
+	^ STONJSON fromString: aJSONByteString
+]
+
 { #category : #accessing }
 SmallforceRequest >> accessToken [
 
@@ -78,61 +86,152 @@ SmallforceRequest >> client: anObject [
 { #category : #'rest methods' }
 SmallforceRequest >> methodDelete: anEndpointString [
 
-	^ self shouldBeImplemented 
+	| uri response |
+	uri := org , anEndpointString.
+
+	response := client
+		            beOneShot;
+		            headerAt: 'Authorization' add: 'Bearer ' , accessToken;
+		            delete: uri.
+	self validateAuthentication: response.
+	response ifNil: [ ^ response ]. "Some responses are expected to be empty, so skip the deserialization if so."
+	^ response deserializeJSON
+]
+
+{ #category : #'rest methods' }
+SmallforceRequest >> methodDelete: anEndpointString withHeaders: aHeaderDict [
+
+	| uri response |
+	uri := org , anEndpointString.
+
+	aHeaderDict keysAndValuesDo: [ :header :headerArgument | 
+		client headerAt: header add: headerArgument ].
+
+	response := client
+		            beOneShot;
+		            headerAt: 'Authorization' add: 'Bearer ' , accessToken;
+		            delete: uri.
+	self validateAuthentication: response.
+	response ifNil: [ ^ response ]. "Some responses are expected to be empty, so skip the deserialization if so."
+	^ response deserializeJSON
 ]
 
 { #category : #'rest methods' }
 SmallforceRequest >> methodGet: anEndpointString [
-	"I return STON. For the raw response, use methodGetRaw."
 
-	| uri |
+	| uri response |
 	uri := org , anEndpointString.
 
-	^ STONJSON fromString: (client
-			   beOneShot;
-			   headerAt: 'Authorization' add: 'Bearer ' , accessToken;
-			   get: uri)
+	response := client
+		            beOneShot;
+		            headerAt: 'Authorization' add: 'Bearer ' , accessToken;
+		            get: uri.
+	self validateAuthentication: response.
+	^ response deserializeJSON
 ]
 
 { #category : #'rest methods' }
-SmallforceRequest >> methodGet: anEndpointString withHeaders: aHeaderArray [
-	"I return STON. For the raw return, use methodGetRaw.
-To use additional headers, add additional headers as an array of Association key:value pairs."
+SmallforceRequest >> methodGet: anEndpointString withHeaders: aHeaderDict [
 
-	| uri |
+	| uri response |
 	uri := org , anEndpointString.
 
-	aHeaderArray do: [ :h |
-		client headerAt: (h key) add: (h value) ].
+	aHeaderDict keysAndValuesDo: [ :header :headerArgument | 
+		client headerAt: header add: headerArgument ].
 
-	^ STONJSON fromString: (client
-			   beOneShot;
-			   headerAt: 'Authorization' add: 'Bearer ' , accessToken;
-			   get: uri)
+	response := client
+		            beOneShot;
+		            headerAt: 'Authorization' add: 'Bearer ' , accessToken;
+		            get: uri.
+	self validateAuthentication: response.
+	^ response deserializeJSON
 ]
 
 { #category : #'rest methods' }
-SmallforceRequest >> methodGetRaw: anEndpointString [
-"I return the request as a raw ByteString. For STON, use methodGet."
-	| uri |
+SmallforceRequest >> methodPatch: anEndpointString body: aBodyString [
+
+	| uri response |
 	uri := org , anEndpointString.
 
-	 ^ client
-		beOneShot;
-		  headerAt: 'Authorization' add:'Bearer ', accessToken;
-		  get: uri
+	response := client
+		            beOneShot;
+		            headerAt: 'Authorization' add: 'Bearer ' , accessToken;
+		            patch: uri contents: aBodyString.
+	self validateAuthentication: response.
+	response ifNil: [ ^ response ]. "Some responses are expected to be empty, so skip the deserialization if so."
+	^ response deserializeJSON
 ]
 
 { #category : #'rest methods' }
-SmallforceRequest >> methodPatch: anEndpointString [
+SmallforceRequest >> methodPatchJSON: anEndpointString body: aBodyJSON [
 
-	^ self shouldBeImplemented 
+	"The JSON body should be supplied by the caller after having serialized an SObject using its own toJSON message. "
+
+	| uri response reqBody |
+	uri := org , anEndpointString.
+	"ZnClient will not accept manually setting the Content-Type header to application/json. It must be passed a JSON ZnEntity."
+	reqBody := ZnEntity json: aBodyJSON.
+
+	response := client
+		            beOneShot;
+		            headerAt: 'Authorization' add: 'Bearer ' , accessToken;
+		            entity: reqBody;
+		            url: uri;
+		            patch.
+	self validateAuthentication: response.
+	response ifNil: [ ^ response ]. "Some responses are expected to be empty, so skip the deserialization if so."
+	^ response deserializeJSON
 ]
 
 { #category : #'rest methods' }
-SmallforceRequest >> methodPost: anEndpointString [
+SmallforceRequest >> methodPost: anEndpointString body: aBodyString [
 
-	^ self shouldBeImplemented 
+	| uri response |
+	uri := org , anEndpointString.
+
+	response := client
+		            beOneShot;
+		            headerAt: 'Authorization' add: 'Bearer ' , accessToken;
+		            post: uri contents: aBodyString.
+	self validateAuthentication: response.
+	response ifNil: [ ^ response ]. "Some responses are expected to be empty, so skip the deserialization if so."
+	^ response deserializeJSON
+]
+
+{ #category : #'rest methods' }
+SmallforceRequest >> methodPostJSON: anEndpointString body: aBodyJSON [
+
+	"The JSON body should be supplied by the caller after having serialized an SObject using its own toJSON message. "
+
+	| uri response reqBody |
+	uri := org , anEndpointString.
+	"ZnClient will not accept manually setting the Content-Type header to application/json. It must be passed a JSON ZnEntity."
+	reqBody := ZnEntity json: aBodyJSON.
+
+	response := client
+		            beOneShot;
+		            headerAt: 'Authorization' add: 'Bearer ' , accessToken;
+		            entity: reqBody;
+		            url: uri;
+		            post.
+	self validateAuthentication: response.
+	response ifNil: [ ^ response ]. "Some responses are expected to be empty, so skip the deserialization if so."
+	^ response deserializeJSON
+]
+
+{ #category : #'rest methods' }
+SmallforceRequest >> methodPut: anEndpointString body: aBodyString [
+
+	| uri response |
+	uri := org , anEndpointString.
+
+	response := client
+		            beOneShot;
+		            headerAt: 'Authorization' add: 'Bearer ' , accessToken;
+		            put: uri contents: aBodyString.
+	self validateAuthentication: response.
+	response ifNil: [ ^ response ]. "Some responses are expected to be empty, so skip the deserialization if so."
+	^ response deserializeJSON
 ]
 
 { #category : #accessing }
@@ -145,6 +244,22 @@ SmallforceRequest >> org [
 SmallforceRequest >> org: anObject [
 
 	org := anObject
+]
+
+{ #category : #validation }
+SmallforceRequest >> validateAuthentication: aResponseBody [
+
+	"Raise an exception if the Salesforce org authentication is invalid."
+
+	aResponseBody
+	=
+	'[{"message":"Session expired or invalid","errorCode":"INVALID_SESSION_ID"}]' 
+		ifTrue: [ AuthenticationFailedException raise ].
+
+	aResponseBody
+	=
+	'[{"message":"INVALID_AUTH_HEADER","errorCode":"INVALID_AUTH_HEADER"}]' 
+		ifTrue: [ AuthenticationFailedException raise ]
 ]
 
 { #category : #accessing }
