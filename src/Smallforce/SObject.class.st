@@ -91,24 +91,16 @@ SObject >> recordId: anObject [
 { #category : #serializing }
 SObject >> toJSON [
 
-	"Return this object's fields as JSON."
+	"Return this object's fields as JSON. Nil or lowercase variables are skipped."
 
-	| fields output thisField |
-	"Get all the fields (instance variables) of this SObject."
-	fields := self class allInstVarNames.
-	"Add them to a dict. Skip the fields if they are nil. Also skip the apiName, as that is an external identifier and not a Salesforce object field."
-	output := Dictionary new.
-	fields do: [ :field | 
-		field = 'apiName' | (field = 'recordId') | (field = 'excludedFields')
-			ifTrue: [ "Skip this iteration to prevent apiName, record ID, or excluded fields from being added to the JSON."
-				 ]
-			ifFalse: [ 
-				thisField := field asSymbol.
-				(self perform: thisField) == nil
-					ifTrue: [  ]
-					ifFalse: [ 
-					output at: field asString put: (self perform: thisField) ] ] ].
+	| fields filtered |
+	fields := self class instanceVariables.
+	filtered := Dictionary new.
+	"Skip nil or lowercase fields."
+	fields do: [ :f | 
+		f name first isUppercase ifTrue: [ 
+			(self perform: f name asSymbol) == nil ifFalse: [ 
+				filtered at: f name put: (self perform: f name asSymbol) ] ] ].
 
-	"Serialize the dict to JSON and return it."
-	^ STONJSON toString: output
+	^ STONJSON toString: filtered
 ]
