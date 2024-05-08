@@ -644,6 +644,8 @@ Smallforce >> syncToSalesforce: anSObject [
 	"Provide an SObject with a valid record ID to update all fields on the record in Salesforce with the corresponding data from the SObject."
 
 	"Fields with capital letters are assumed to correspond to Salesforce object fields. Lowercase fields are skipped"
+	
+	"WARNING: Nil fields WILL be written to Salesforce records! Be careful when syncing on your record and make sure you do not have any unintended nil fields before you attempt to sync."
 
 	| fieldsToUpdate filteredFields |
 	fieldsToUpdate := (anSObject class instanceVariables select: [ :field | 
