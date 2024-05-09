@@ -8,7 +8,7 @@ Smallforce does not bind the entire Salesforce API. Instead, it is designed for 
 
 You use Smallforce by working with two classes: _Smallforce_ and _SObject_.
 
-_Smallforce_ is your connection to your Salesforce org. It wraps a ZnClient to easily send and receive data to your org. Data received from your org is converted from JSON responses to Smalltalk objects, and vice versa.
+_Smallforce_ is your connection to your Salesforce org. It wraps a ZnClient to easily send and receive your org's data. Data received from your org is converted from JSON responses to Smalltalk objects, and vice versa.
 
 _SObject_ is an abstract class that represents an Object in your Salesforce org. The SObject class represents an object in your org; an instance of SObject represents a record of that object in your org. SObject is designed to be subclassed by you to represent your org's Custom Objects.
 
@@ -280,4 +280,109 @@ You'll notice there are fields on the object, such as `IsDeleted`, which are not
 
 ## Develop Custom Business Logic on a Custom SObject
 
+We have a custom business process in our company where we update the Rank__c field on our Officer records when they are promoted. If they are a Sergeant, they are promoted to a Lieutenant; a Lieutenant to a Detective; and a Detective to a Chief. A Chief cannot be promoted. If an Officer does not have a Rank assigned, they become a Sergeant.
+
+We can implement this logic directly on our SObject. Up until now, we have created SObjects and passed them as arguments to our Smallforce object's messages. A common pattern you may use when developing your org's business logic is to invert this relationship, so that the Smallforce connection is a variable on your SObject.
+
+Let's add a `connection` variable on our Officer class:
+
+```
+SObject subclass: #Officer
+	instanceVariableNames: 'connection CreatedById Department__c LastModifiedById Name OwnerId Rank__c'
+	classVariableNames: ''
+	package: 'Smallforce-CustomObjects'
+```
+
+Note how the `connection` variable is not capitalized. For variables and messages not directly correlated to a field on a Salesforce object, use lowercase names as is convention. Smallforce will not attempt to serialize and submit to Salesforce any variables that begin with lowercase letters.
+
+We generate our accessors on the `connection` variable (again, lowercase) and then pass a Smallforce instance to our Officer object.
+
+```
+jill := Officer new.
+jill recordId: 'a01aj00000FSMcsAAH'. "Jill's record ID from Salesforce"
+jill connection: sf.
+```
+
+With this setup, we no longer need to pass this object to Smallforce, but can perform operations on the record in Salesforce directly from the object. Let's implement a message where we get the Rank__c field from the remote Salesforce record, ensuring we are always getting the remote data, and not confusing it with our local data.
+
+```
+getRemoteRank
+
+	"Access this Officer's Rank__c from the Salesforce record, not locally."
+
+	connection ifNil: [ 
+		Error new signal: 'Error: no Salesforce connection on this instance' ].
+	
+	^ (connection getFieldValues: self fields: #('Rank__c')) at: 'Rank__c'.
+```
+
+We retrieve the field in this new, intuitive fashion:
+
+```
+jill getRemoteRank. -> 'Sergeant'
+```
+
+Let's implement our promotion logic on the Officer class:
+
+```
+promote
+
+	"Promote this officer to the next rank, if available."
+
+	| currentRank newRank switch |
+	connection ifNil: [ 
+		Error new signal: 'Error: no Salesforce connection on this instance' ].
+
+	currentRank := self getRemoteRank.
+
+	switch := Dictionary new.
+	switch at: nil put: [ newRank := 'Sergeant' ].
+	switch at: 'Sergeant' put: [ newRank := 'Lieutenant' ].
+	switch at: 'Lieutenant' put: [ newRank := 'Detective' ].
+	switch at: 'Detective' put: [ newRank := 'Chief' ].
+	switch
+		at: 'Chief'
+		put: [ Error new signal: 'Cannot promote a Chief' ].
+
+	(switch at: currentRank) value.
+
+	Rank__c := newRank.
+
+	connection updateRecord: self withFields: #( 'Rank__c' )
+```
+
+We'll check to see what Jill's rank in Salesforce is, promote her, and then check to make sure it worked:
+
+```
+jill getRemoteRank. -> 'Sergeant'
+jill promote.
+jill getRemoteRank. -> 'Lieutenant'
+```
+
+It was so easy, I'm not sure I believe it. I'll double check the record in Salesforce:
+
+![Salesforce Officer record updated](/docs/salesforce-officer-record-updated.png)
+
+You could have implemented the same logic in Flow Builder, but it would have taken you billions of clicks (I counted.)
+
 ## Execute an SOQL Query
+
+Use the `executeQuery:` message to perform an SOQL query on your org. Only provide a raw query; Smallforce does not include a query builder class (there are great ones [made by the community](https://lwc-soql-builder.github.io/) and [provided by Salesforce](https://developer.salesforce.com/tools/vscode/en/soql/soql-builder)).
+
+Query Officer records into a collection, and sync each one with their data from Salesforce:
+
+```
+response := sf executeQuery: 'SELECT Id FROM Officer__c WHERE Department__r.Name = ''Raccoon City Police Department'' '.
+officers := OrderedCollection new.
+(response at: 'records') do: [ :o | newOfficer := Officer new. newOfficer recordId: (o at: 'Id'). officers add: newOfficer. ].
+officers do: [ :o | sf syncFromSalesforce: o ].
+officers inspect. "New collection containing the RCPD officers, with their records synced"
+```
+
+You can use `searchString` for SOSL searches:
+
+```
+sf searchString: 'Wesker'. -> a Dictionary('searchRecords'->an Array(a Dictionary('Id'->'a01aj00000FTtEzAAL'
+'attributes'->a Dictionary('type'->'Officer__c'
+'url'->'/services/data/v60.0/sobjects/Officer__c/a01aj00000FTtEzAAL'))))
+```
