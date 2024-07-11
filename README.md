@@ -1,3 +1,5 @@
+*This branch is compatible with Pharo 10.*
+
 # Smallforce
 
 Smallforce provides bindings to the Salesforce REST API in Pharo Smalltalk. Get information about your org, work with records, and extend Smallforce's provided classes to develop and implement your org's business logic with the elegant, introspective and fully live programming environment made possible by Pharo.
