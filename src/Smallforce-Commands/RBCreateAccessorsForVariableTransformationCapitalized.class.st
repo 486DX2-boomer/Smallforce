@@ -6,13 +6,14 @@ I am used by a couple of other refactorings  creating new variables and accessor
 My precondition is that the variable name is defined for this class.
 "
 Class {
-	#name : #RBCreateAccessorsForVariableRefactoringCapitalized,
-	#superclass : #RBCreateAccessorsForVariableRefactoring,
-	#category : #'Smallforce-Commands'
+	#name : 'RBCreateAccessorsForVariableTransformationCapitalized',
+	#superclass : 'RBCreateAccessorsForVariableTransformation',
+	#category : 'Smallforce-Commands',
+	#package : 'Smallforce-Commands'
 }
 
-{ #category : #private }
-RBCreateAccessorsForVariableRefactoringCapitalized >> defineSetterMethod [
+{ #category : 'transforming' }
+RBCreateAccessorsForVariableTransformationCapitalized >> defineSetterMethod [
 	| definingClass string |
 	definingClass := self definingClass.
 	string := self needsReturnForSetter 
@@ -26,8 +27,8 @@ RBCreateAccessorsForVariableRefactoringCapitalized >> defineSetterMethod [
 	^selector
 ]
 
-{ #category : #accessing }
-RBCreateAccessorsForVariableRefactoringCapitalized >> selector [ 
+{ #category : 'transforming' }
+RBCreateAccessorsForVariableTransformationCapitalized >> selector [ 
 	^ selector ifNil: [ 
 		selector := (self safeMethodNameFor: self definingClass
 				basedOn: variableName asString) capitalized ]

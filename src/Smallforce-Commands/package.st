@@ -1,1 +1,1 @@
-Package { #name : #'Smallforce-Commands' }
+Package { #name : 'Smallforce-Commands' }
