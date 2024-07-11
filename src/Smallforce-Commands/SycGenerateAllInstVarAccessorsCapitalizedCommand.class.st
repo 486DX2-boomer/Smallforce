@@ -2,24 +2,25 @@
 I am a command to generate accessors for all inst vars of given classes, with capitalized names.
 "
 Class {
-	#name : #SycGenerateAllInstVarAccessorsCapitalizedCommand,
-	#superclass : #SycGenerateAllInstVarAccessorsCommand,
-	#category : #'Smallforce-Commands'
+	#name : 'SycGenerateAllInstVarAccessorsCapitalizedCommand',
+	#superclass : 'SycGenerateAllInstVarAccessorsCommand',
+	#category : 'Smallforce-Commands',
+	#package : 'Smallforce-Commands'
 }
 
-{ #category : #converting }
+{ #category : 'execution' }
 SycGenerateAllInstVarAccessorsCapitalizedCommand >> asRefactorings [
 
 	| refactorings |
 	refactorings := classes flatCollect: [:eachClass |
 		eachClass	 slots collect: [:var | 
-			var createRefactoring: RBCreateAccessorsForVariableRefactoringCapitalized for: eachClass]].
+			var createRefactoring: RBCreateAccessorsForVariableTransformationCapitalized for: eachClass]].
 	refactorings do: [ :each | 
 		each classVariable: false].
 	^refactorings
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SycGenerateAllInstVarAccessorsCapitalizedCommand >> defaultMenuItemName [
 	^'Generate accessors - capitalized'
 ]
