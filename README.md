@@ -66,7 +66,7 @@ Create a new Smallforce object with your authentication details:
 
 ```
 sf := Smallforce new.
-sf accessToken: '00abc00def00012345'; org: 'https://adjective-animal-1abcd2-dev-ed.my.salesforce.com'; sfVersion:'v60.0'.
+sf accessToken: '00abc00def00012345'; org: 'https://adjective-animal-1abcd2-dev-ed.my.salesforce.com'; version:'v60.0'.
 ```
 
 Let's [get our org limits](https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/dome_limits.htm) to see if our authentication is working:
