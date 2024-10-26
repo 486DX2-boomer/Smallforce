@@ -10,18 +10,20 @@ I am usually not instantiated directly, because you typically want to start with
 sfVersion is usually provided by a Smallforce object; SmallforceRequest contains it only in the unusual circumstance a request is being initialized directly instead of from a Smallforce object.
 "
 Class {
-	#name : #SmallforceRequest,
-	#superclass : #Object,
+	#name : 'SmallforceRequest',
+	#superclass : 'Object',
 	#instVars : [
 		'org',
 		'accessToken',
 		'sfVersion',
 		'client'
 	],
-	#category : #'Smallforce-Base'
+	#category : 'Smallforce-Base',
+	#package : 'Smallforce',
+	#tag : 'Base'
 }
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 SmallforceRequest class >> newWithOrg: anOrg accessToken: aToken [
 	"For anOrg, provide the full instance url. It should look like this: https://brave-bear-8yshw2-dev-ed.my.salesforce.com"
 
@@ -36,7 +38,7 @@ SmallforceRequest class >> newWithOrg: anOrg accessToken: aToken [
 	
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 SmallforceRequest class >> newWithOrg: anOrg accessToken: aToken version: aSalesforceVersion [
 	"For anOrg, provide the full instance url. It should look like this: https://brave-bear-8yshw2-dev-ed.my.salesforce.com. The version information should look like this: v60.0"
 
@@ -51,7 +53,7 @@ SmallforceRequest class >> newWithOrg: anOrg accessToken: aToken version: aSales
 	
 ]
 
-{ #category : #converting }
+{ #category : 'converting' }
 SmallforceRequest class >> stonMarshal: aJSONByteString [
 
 	"Convert a JSON response from a SmallforceRequest to STON."
@@ -59,31 +61,31 @@ SmallforceRequest class >> stonMarshal: aJSONByteString [
 	^ STONJSON fromString: aJSONByteString
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SmallforceRequest >> accessToken [
 
 	^ accessToken
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SmallforceRequest >> accessToken: anObject [
 
 	accessToken := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SmallforceRequest >> client [
 
 	^ client
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SmallforceRequest >> client: anObject [
 
 	client := anObject
 ]
 
-{ #category : #'rest methods' }
+{ #category : 'rest methods' }
 SmallforceRequest >> methodDelete: anEndpointString [
 
 	| uri response |
@@ -98,7 +100,7 @@ SmallforceRequest >> methodDelete: anEndpointString [
 	^ response deserializeJSON
 ]
 
-{ #category : #'rest methods' }
+{ #category : 'rest methods' }
 SmallforceRequest >> methodDelete: anEndpointString withHeaders: aHeaderDict [
 
 	| uri response |
@@ -116,7 +118,7 @@ SmallforceRequest >> methodDelete: anEndpointString withHeaders: aHeaderDict [
 	^ response deserializeJSON
 ]
 
-{ #category : #'rest methods' }
+{ #category : 'rest methods' }
 SmallforceRequest >> methodGet: anEndpointString [
 
 	| uri response |
@@ -130,7 +132,7 @@ SmallforceRequest >> methodGet: anEndpointString [
 	^ response deserializeJSON
 ]
 
-{ #category : #'rest methods' }
+{ #category : 'rest methods' }
 SmallforceRequest >> methodGet: anEndpointString withHeaders: aHeaderDict [
 
 	| uri response |
@@ -147,7 +149,7 @@ SmallforceRequest >> methodGet: anEndpointString withHeaders: aHeaderDict [
 	^ response deserializeJSON
 ]
 
-{ #category : #'rest methods' }
+{ #category : 'rest methods' }
 SmallforceRequest >> methodPatch: anEndpointString body: aBodyString [
 
 	| uri response |
@@ -162,7 +164,7 @@ SmallforceRequest >> methodPatch: anEndpointString body: aBodyString [
 	^ response deserializeJSON
 ]
 
-{ #category : #'rest methods' }
+{ #category : 'rest methods' }
 SmallforceRequest >> methodPatchJSON: anEndpointString body: aBodyJSON [
 
 	"The JSON body should be supplied by the caller after having serialized an SObject using its own toJSON message. "
@@ -183,7 +185,7 @@ SmallforceRequest >> methodPatchJSON: anEndpointString body: aBodyJSON [
 	^ response deserializeJSON
 ]
 
-{ #category : #'rest methods' }
+{ #category : 'rest methods' }
 SmallforceRequest >> methodPost: anEndpointString body: aBodyString [
 
 	| uri response |
@@ -198,7 +200,7 @@ SmallforceRequest >> methodPost: anEndpointString body: aBodyString [
 	^ response deserializeJSON
 ]
 
-{ #category : #'rest methods' }
+{ #category : 'rest methods' }
 SmallforceRequest >> methodPostJSON: anEndpointString body: aBodyJSON [
 
 	"The JSON body should be supplied by the caller after having serialized an SObject using its own toJSON message. "
@@ -219,7 +221,7 @@ SmallforceRequest >> methodPostJSON: anEndpointString body: aBodyJSON [
 	^ response deserializeJSON
 ]
 
-{ #category : #'rest methods' }
+{ #category : 'rest methods' }
 SmallforceRequest >> methodPut: anEndpointString body: aBodyString [
 
 	| uri response |
@@ -234,19 +236,19 @@ SmallforceRequest >> methodPut: anEndpointString body: aBodyString [
 	^ response deserializeJSON
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SmallforceRequest >> org [
 
 	^ org
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SmallforceRequest >> org: anObject [
 
 	org := anObject
 ]
 
-{ #category : #validation }
+{ #category : 'validation' }
 SmallforceRequest >> validateAuthentication: aResponseBody [
 
 	"Raise an exception if the Salesforce org authentication is invalid."
@@ -262,13 +264,13 @@ SmallforceRequest >> validateAuthentication: aResponseBody [
 		ifTrue: [ AuthenticationFailedException raise ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SmallforceRequest >> version [
 
 	^ sfVersion
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SmallforceRequest >> version: anObject [
 
 	sfVersion := anObject

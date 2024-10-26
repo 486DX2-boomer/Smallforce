@@ -3,7 +3,7 @@ I provide bindings to the Salesforce REST API by managing SmallforceRequests.
 
 You should create a new Smallforce like so:
 
-`sf := Smallforce new accessToken: '00abc00def00012345'; org: 'https://adjective-animal-1abcd2-dev-ed.my.salesforce.com'; sfVersion:'v60.0'.`
+`sf := Smallforce new accessToken: '00abc00def00012345'; org: 'https://adjective-animal-1abcd2-dev-ed.my.salesforce.com'; version:'v60.0'.`
 
 Smallforce is designed to mirror Salesforce's REST API as described in the documentation here: `https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/using_resources_working_with_records.htm`
 
@@ -14,30 +14,32 @@ The syncFromSalesforce: and syncToSalesforce: messages provide a highly intuitiv
 While the intended way to work with a Smallforce instance is to initialize it and pass SObjects to its messages, a Smallforce instance can also represent a ""connection"" to your Salesforce org. For example, you can add your custom business logic to your subclasses of SObject, and add a Smallforce as a ""connection"" instance variable to make it easier to perform record operations on your custom object.
 "
 Class {
-	#name : #Smallforce,
-	#superclass : #Object,
+	#name : 'Smallforce',
+	#superclass : 'Object',
 	#instVars : [
 		'org',
 		'accessToken',
 		'version',
 		'response'
 	],
-	#category : #'Smallforce-Base'
+	#category : 'Smallforce-Base',
+	#package : 'Smallforce',
+	#tag : 'Base'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 Smallforce >> accessToken [
 
 	^ accessToken
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 Smallforce >> accessToken: anObject [
 
 	accessToken := anObject
 ]
 
-{ #category : #'Salesforce-manage passwords' }
+{ #category : 'Salesforce-manage passwords' }
 Smallforce >> changePasswordForUser: anSObject to: aString [
 
 	"Use the sObject User Password resource to set, reset, or get information about a user password."
@@ -61,7 +63,7 @@ Smallforce >> changePasswordForUser: anSObject to: aString [
 		            body: body
 ]
 
-{ #category : #'Salesforce-working with records' }
+{ #category : 'Salesforce-working with records' }
 Smallforce >> createRecord: anSObject [
 
 	"https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/dome_sobject_create.htm"
@@ -81,7 +83,7 @@ Smallforce >> createRecord: anSObject [
 	^ response
 ]
 
-{ #category : #'Salesforce-working with records' }
+{ #category : 'Salesforce-working with records' }
 Smallforce >> createRecordAndAssignId: anSObject [
 
 	"https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/dome_sobject_create.htm"
@@ -103,7 +105,7 @@ Smallforce >> createRecordAndAssignId: anSObject [
 	^ response
 ]
 
-{ #category : #'helper methods' }
+{ #category : 'helper methods' }
 Smallforce >> createSearchStringFromArray: anArray [
 
 	"Construct a search string from an array containing SObjects, strings, or both."
@@ -124,7 +126,7 @@ Smallforce >> createSearchStringFromArray: anArray [
 	^ searchString
 ]
 
-{ #category : #'Salesforce-delete Lightning Experience events' }
+{ #category : 'Salesforce-delete Lightning Experience events' }
 Smallforce >> deleteMultipleEvents: anEvent [
 
 	"Use the HTTP DELETE method to remove one or more IsRecurrence2 events in a series. You can remove a single event, all events following and including a specific event, or an entire event series."
@@ -144,7 +146,7 @@ To delete an entire event series, specify the event ID of the first occurrence i
 		            , 'fromThisEventOnwards'
 ]
 
-{ #category : #'Salesforce-working with records' }
+{ #category : 'Salesforce-working with records' }
 Smallforce >> deleteRecord: anSObject [
 
 	"Use the sObject Rows resource to delete records. Specify the record ID and use the DELETE method of the resource to delete a record.
@@ -163,7 +165,7 @@ https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/dome_de
 	^ response
 ]
 
-{ #category : #'Salesforce-delete Lightning Experience events' }
+{ #category : 'Salesforce-delete Lightning Experience events' }
 Smallforce >> deleteSingleEvent: anEvent [
 
 	"Use the HTTP DELETE method to remove one or more IsRecurrence2 events in a series. You can remove a single event, all events following and including a specific event, or an entire event series."
@@ -180,7 +182,7 @@ Use the sObject Rows resource to delete event records. To delete a single occurr
 		            , anEvent apiName , '/' , anEvent recordId
 ]
 
-{ #category : #'Salesforce-org info' }
+{ #category : 'Salesforce-org info' }
 Smallforce >> describeGlobal [
 
 	"Lists the available objects and the associated metadata.
@@ -193,7 +195,7 @@ You can use the If-Modified-Since or If-Unmodified-Since header with this resour
 	^ response
 ]
 
-{ #category : #'Salesforce-org info' }
+{ #category : 'Salesforce-org info' }
 Smallforce >> describeGlobalIfModifiedSince: aDate [
 
 	"Lists the available objects and the associated metadata.
@@ -212,7 +214,7 @@ The date format is EEE, dd MMM yyyy HH:mm:ss z. For example: If-Unmodified-Since
 	^ response
 ]
 
-{ #category : #'Salesforce-org info' }
+{ #category : 'Salesforce-org info' }
 Smallforce >> describeGlobalIfUnmodifiedSince: aDate [
 
 	"Lists the available objects and the associated metadata.
@@ -231,7 +233,7 @@ The date format is EEE, dd MMM yyyy HH:mm:ss z. For example: If-Unmodified-Since
 	^ response
 ]
 
-{ #category : #'Salesforce-object metadata' }
+{ #category : 'Salesforce-object metadata' }
 Smallforce >> describeObject: anSObject [
 
 	"Use the sObject Describe resource to retrieve all the metadata for an object, including information about each field, URLs, and child relationships.
@@ -243,7 +245,7 @@ https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/dome_so
 	^ response
 ]
 
-{ #category : #'Salesforce-searches and queries' }
+{ #category : 'Salesforce-searches and queries' }
 Smallforce >> executeQuery: aString [
 
 	"Use the Query resource to execute a SOQL query that returns all the results in a single response, or if needed, returns part of the results and a locator used to retrieve the remaining results."
@@ -261,7 +263,7 @@ Smallforce >> executeQuery: aString [
 	^ response
 ]
 
-{ #category : #'Salesforce-searches and queries' }
+{ #category : 'Salesforce-searches and queries' }
 Smallforce >> executeQueryWithDeleted: aString [
 
 	"This is the same as executeQuery, but uses queryAll to include deleted records."
@@ -275,7 +277,7 @@ Smallforce >> executeQueryWithDeleted: aString [
 	^ response
 ]
 
-{ #category : #'Salesforce-searches and queries' }
+{ #category : 'Salesforce-searches and queries' }
 Smallforce >> getDefaultSearchScopeAndOrder [
 
 	"Use the Search Scope and Order resource to retrieve the default global search scope and order for the logged-in user, including any pinned objects in the user’s search results page."
@@ -287,7 +289,7 @@ Smallforce >> getDefaultSearchScopeAndOrder [
 	^ response
 ]
 
-{ #category : #'Salesforce-updated and deleted records' }
+{ #category : 'Salesforce-updated and deleted records' }
 Smallforce >> getDeletedRecordsOn: anSObject from: startDateAndTime to: endDateAndTime [
 
 	"Use the sObject Get Deleted resource to get a list of deleted records for the specified object. Specify the date and time range within which the records for the given object were deleted. Deleted records are written to a delete log (that is periodically purged), and will be filtered out of most operations, such as sObject Rows or Query (although QueryAll will include deleted records in results)."
@@ -308,7 +310,7 @@ Smallforce >> getDeletedRecordsOn: anSObject from: startDateAndTime to: endDateA
 	^ response
 ]
 
-{ #category : #'Salesforce-working with records' }
+{ #category : 'Salesforce-working with records' }
 Smallforce >> getFieldValues: anSObject [
 
 	"You use the GET method of the sObject Rows resource to retrieve field values from a record.
@@ -326,7 +328,7 @@ If you don’t use the fields parameter, the request retrieves all standard and 
 	^ response
 ]
 
-{ #category : #'Salesforce-working with records' }
+{ #category : 'Salesforce-working with records' }
 Smallforce >> getFieldValues: anSObject fields: fieldsToRetrieveArray [
 
 	"You use the GET method of the sObject Rows resource to retrieve field values from a record.
@@ -353,7 +355,7 @@ If you don’t use the fields parameter, the request retrieves all standard and 
 	^ response
 ]
 
-{ #category : #'Salesforce-object metadata' }
+{ #category : 'Salesforce-object metadata' }
 Smallforce >> getObjectChanges: anSObject since: aDateString [
 
 	"Use the sObject Describe resource and the If-Modified-Since HTTP header to determine if object metadata has changed.
@@ -375,7 +377,7 @@ Example date string: Wed, 3 Jul 2013 19:43:31 GMT"
 	^ response
 ]
 
-{ #category : #'Salesforce-object metadata' }
+{ #category : 'Salesforce-object metadata' }
 Smallforce >> getObjectMetadata: anSObject [
 
 	"Use the sObject Basic Information resource to get metadata for an object.
@@ -387,7 +389,7 @@ https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/dome_so
 	^ response
 ]
 
-{ #category : #'Salesforce-manage passwords' }
+{ #category : 'Salesforce-manage passwords' }
 Smallforce >> getPasswordExpirationStatusForUser: anSObject [
 
 	"Use the sObject User Password resource to set, reset, or get information about a user password."
@@ -405,7 +407,7 @@ Smallforce >> getPasswordExpirationStatusForUser: anSObject [
 	^ response
 ]
 
-{ #category : #'Salesforce-traversing related' }
+{ #category : 'Salesforce-traversing related' }
 Smallforce >> getRelated: anSObject relationship: relationshipName [
 
 	"Traverse the relationship to retrieve the related record. This API is confusing: for custom objects you pass the relationship name with an __r suffix, not a __c suffix. For parent-to-child relationships, you also have to use the Plural Label. For standard objects you don't use the __r suffix.
@@ -435,7 +437,7 @@ Smallforce >> getRelated: anSObject relationship: relationshipName [
 	^ response
 ]
 
-{ #category : #'Salesforce-searches and queries' }
+{ #category : 'Salesforce-searches and queries' }
 Smallforce >> getSearchResultLayoutForObject: anSObject [
 
 	"Use the Search Result Layouts resource to retrieve the search result layout configuration for each object specified in the query string."
@@ -452,7 +454,7 @@ Smallforce >> getSearchResultLayoutForObject: anSObject [
 	^ response
 ]
 
-{ #category : #'Salesforce-searches and queries' }
+{ #category : 'Salesforce-searches and queries' }
 Smallforce >> getSearchResultLayoutForObjectFromAPIName: aString [
 
 	"Use the Search Result Layouts resource to retrieve the search result layout configuration for each object specified in the query string."
@@ -469,7 +471,7 @@ Smallforce >> getSearchResultLayoutForObjectFromAPIName: aString [
 	^ response
 ]
 
-{ #category : #'Salesforce-searches and queries' }
+{ #category : 'Salesforce-searches and queries' }
 Smallforce >> getSearchResultLayoutForObjectsFromArray: anArray [
 
 	"Use the Search Result Layouts resource to retrieve the search result layout configuration for each object specified in the query string."
@@ -490,7 +492,7 @@ Smallforce >> getSearchResultLayoutForObjectsFromArray: anArray [
 	^ response
 ]
 
-{ #category : #'Salesforce-updated and deleted records' }
+{ #category : 'Salesforce-updated and deleted records' }
 Smallforce >> getUpdatedRecordsOn: anSObject from: startDateAndTime to: endDateAndTime [
 
 	"Use the sObject Get Updated resource to get a list of updated (modified or added) records for the specified object. Specify the date and time range within which the records for the given object were updated."
@@ -511,7 +513,7 @@ Smallforce >> getUpdatedRecordsOn: anSObject from: startDateAndTime to: endDateA
 	^ response
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 Smallforce >> lastResponse [
 
 	"Access the response from the most recent request."
@@ -519,7 +521,7 @@ Smallforce >> lastResponse [
 	^ response
 ]
 
-{ #category : #'Salesforce-org info' }
+{ #category : 'Salesforce-org info' }
 Smallforce >> limits [
 
 	"Lists information about limits in your org. For each limit, this resource returns the maximum allocation and the remaining allocation based on usage."
@@ -530,25 +532,25 @@ Smallforce >> limits [
 	^ response
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 Smallforce >> newRequest [
 	"Helper method to generate a fresh SmallforceRequest."
 	^ SmallforceRequest newWithOrg: org accessToken: accessToken version: version.
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 Smallforce >> org [
 
 	^ org
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 Smallforce >> org: anObject [
 
 	org := anObject
 ]
 
-{ #category : #'Salesforce-manage passwords' }
+{ #category : 'Salesforce-manage passwords' }
 Smallforce >> resetPasswordForUser: anSObject [
 
 	"Use the sObject User Password resource to set, reset, or get information about a user password."
@@ -566,7 +568,7 @@ Smallforce >> resetPasswordForUser: anSObject [
 	^ response
 ]
 
-{ #category : #'Salesforce-org info' }
+{ #category : 'Salesforce-org info' }
 Smallforce >> resourcesByVersion [
 
 	"Resources by Version
@@ -578,7 +580,7 @@ https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/resourc
 	^ response
 ]
 
-{ #category : #'Salesforce-org info' }
+{ #category : 'Salesforce-org info' }
 Smallforce >> resourcesByVersion: salesforceVersion [
 
 	"Resources by Version
@@ -592,7 +594,7 @@ Provide the Salesforce version in the form of v0.xx eg v0.60"
 	^ response
 ]
 
-{ #category : #'Salesforce-searches and queries' }
+{ #category : 'Salesforce-searches and queries' }
 Smallforce >> searchString: aString [
 
 	"Use the Search resource to execute a SOSL search ..."
@@ -612,7 +614,7 @@ Smallforce >> searchString: aString [
 	^ response
 ]
 
-{ #category : #'synchronize records' }
+{ #category : 'synchronize records' }
 Smallforce >> syncFromSalesforce: anSObject [
 
 	"Provide an SObject with a valid record ID to update all fields on the SObject with the corresponding data from Salesforce."
@@ -638,7 +640,7 @@ Smallforce >> syncFromSalesforce: anSObject [
 			anSObject perform: (fieldName , ':') asSymbol with: fieldValue ] ]
 ]
 
-{ #category : #'synchronize records' }
+{ #category : 'synchronize records' }
 Smallforce >> syncToSalesforce: anSObject [
 
 	"Provide an SObject with a valid record ID to update all fields on the record in Salesforce with the corresponding data from the SObject."
@@ -658,7 +660,7 @@ Smallforce >> syncToSalesforce: anSObject [
 	^ self updateRecord: anSObject withFields: filteredFields
 ]
 
-{ #category : #'Salesforce-working with records' }
+{ #category : 'Salesforce-working with records' }
 Smallforce >> updateRecord: anSObject withFields: fieldsToUpdateArray [
 
 	"You use the sObject Rows resource to update records. Provide the updated record information in your request data and use the PATCH method of the resource with a specific record ID to update that record. Records in a single file must be of the same object type."
@@ -687,13 +689,13 @@ Smallforce >> updateRecord: anSObject withFields: fieldsToUpdateArray [
 	^ response
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 Smallforce >> version [
 
 	^ version
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 Smallforce >> version: anSfVersionString [
 
     "Check if the provided sfVersion matches the required format"
@@ -706,7 +708,7 @@ Smallforce >> version: anSfVersionString [
     version := anSfVersionString.
 ]
 
-{ #category : #'Salesforce-org info' }
+{ #category : 'Salesforce-org info' }
 Smallforce >> versions [
 
 	"Versions
@@ -718,7 +720,7 @@ https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/resourc
 	^ response
 ]
 
-{ #category : #'Salesforce-recently viewed' }
+{ #category : 'Salesforce-recently viewed' }
 Smallforce >> viewRecentlyViewed [
 
 	"Use the Recently Viewed Items resource to get a list of recently viewed records."
@@ -731,7 +733,7 @@ Smallforce >> viewRecentlyViewed [
 	^ response
 ]
 
-{ #category : #'Salesforce-recently viewed' }
+{ #category : 'Salesforce-recently viewed' }
 Smallforce >> viewRecentlyViewedLimit: aNumber [
 
 	"Use the Recently Viewed Items resource to get a list of recently viewed records."
@@ -747,7 +749,7 @@ Smallforce >> viewRecentlyViewedLimit: aNumber [
 	^ response
 ]
 
-{ #category : #'Salesforce-searches and queries' }
+{ #category : 'Salesforce-searches and queries' }
 Smallforce >> viewRelevantItems [
 
 	"Use the Relevant Items resource to get a list of relevant records."
@@ -760,7 +762,7 @@ Smallforce >> viewRelevantItems [
 	^ response
 ]
 
-{ #category : #'Salesforce-searches and queries' }
+{ #category : 'Salesforce-searches and queries' }
 Smallforce >> viewRelevantItemsFilterByObjects: anArray [
 
 	"Use the Relevant Items resource to get a list of relevant records."

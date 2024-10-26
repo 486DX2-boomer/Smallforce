@@ -1,6 +1,6 @@
-Extension { #name : #String }
+Extension { #name : 'String' }
 
-{ #category : #'*Smallforce' }
+{ #category : '*Smallforce' }
 String >> deserializeJSON [
 
 	"This is a Smallforce utility method to convert a JSON response from the Salesforce REST API to a Smalltalk object."

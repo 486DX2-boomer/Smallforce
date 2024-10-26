@@ -5,12 +5,14 @@ I am raised if an attempt to access the Salesforce API fails authentication.
 
 "
 Class {
-	#name : #AuthenticationFailedException,
-	#superclass : #Error,
-	#category : #'Smallforce-Exceptions'
+	#name : 'AuthenticationFailedException',
+	#superclass : 'Error',
+	#category : 'Smallforce-Exceptions',
+	#package : 'Smallforce',
+	#tag : 'Exceptions'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 AuthenticationFailedException class >> raise [
 
 	self signal: 'Authentication failed: check your access token'

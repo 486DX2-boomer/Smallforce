@@ -14,41 +14,43 @@ Some fields are read-only on Salesforce, while some are enabled only under certa
 It is intended by the author that you should modify and extend subclasses of SObject to implement custom fields and your org's unique business logic.
 "
 Class {
-	#name : #SObject,
-	#superclass : #Object,
+	#name : 'SObject',
+	#superclass : 'Object',
 	#instVars : [
 		'apiName',
 		'recordId',
 		'excludedFields'
 	],
-	#category : #'Smallforce-Base'
+	#category : 'Smallforce-Base',
+	#package : 'Smallforce',
+	#tag : 'Base'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SObject >> apiName [
 
 	^ apiName
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SObject >> apiName: anObject [
 
 	apiName := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SObject >> excludedFields [
 
 	^ excludedFields
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SObject >> excludedFields: anObject [
 
 	excludedFields := anObject
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 SObject >> hasId [
 
 	"Return true if the recordId on this instance is set, return false if not."
@@ -58,7 +60,7 @@ SObject >> hasId [
 		ifFalse: [ ^ false ]
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 SObject >> initialize [
 
 	"All SObjects require an API name which should be defined on initialization by the subclass of SObject."
@@ -68,7 +70,7 @@ SObject >> initialize [
 	self subclassResponsibility
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 SObject >> noId [
 
 	"Return true if the recordId on this instance is not set."
@@ -76,19 +78,19 @@ SObject >> noId [
 	self recordId ifNil: [ ^ true ] ifNotNil: [ ^ false ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SObject >> recordId [
 
 	^ recordId
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SObject >> recordId: anObject [
 
 	recordId := anObject
 ]
 
-{ #category : #serializing }
+{ #category : 'serializing' }
 SObject >> toJSON [
 
 	"Return this object's fields as JSON. Nil or lowercase variables are skipped."
