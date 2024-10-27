@@ -20,7 +20,9 @@ Class {
 		'org',
 		'accessToken',
 		'version',
-		'response'
+		'response',
+		'requestStrategy',
+		'composite'
 	],
 	#category : 'Smallforce-Base',
 	#package : 'Smallforce',
@@ -61,6 +63,12 @@ Smallforce >> changePasswordForUser: anSObject to: aString [
 			            , anSObject apiName , '/' , anSObject recordId , '/'
 			            , 'password'
 		            body: body
+]
+
+{ #category : 'Salesforce-composite requests' }
+Smallforce >> composite [
+
+	^ composite
 ]
 
 { #category : 'Salesforce-working with records' }
@@ -243,6 +251,25 @@ https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/dome_so
 		            '/services/data/' , version , '/sobjects/'
 		            , anSObject apiName , '/describe/'.
 	^ response
+]
+
+{ #category : 'Salesforce-composite requests' }
+Smallforce >> executeCompositeRequest [
+
+	response := (SmallforceRequest
+		 newWithOrg: org
+		 accessToken: accessToken
+		 version: version)
+		methodPostJSON: '/services/data/' , version , '/composite/'
+		body: (composite toJSON).
+		
+	^ response
+]
+
+{ #category : 'Salesforce-composite requests' }
+Smallforce >> executeCompositeRequestAndClear [
+
+	self shouldBeImplemented
 ]
 
 { #category : 'Salesforce-searches and queries' }
@@ -513,6 +540,14 @@ Smallforce >> getUpdatedRecordsOn: anSObject from: startDateAndTime to: endDateA
 	^ response
 ]
 
+{ #category : 'initialization' }
+Smallforce >> initialize [
+	"Sets default behavior to regular requests. Creates an instance of an empty SmallforceCompositeRequest, which is used to construct composite requests. requestStrategy can be set to SmallforceCompositeRequest, but make sure it is set to reference the class, not the instance!"
+
+	requestStrategy := SmallforceRequest.
+	composite := SmallforceCompositeRequest new.
+]
+
 { #category : 'accessing' }
 Smallforce >> lastResponse [
 
@@ -535,7 +570,19 @@ Smallforce >> limits [
 { #category : 'instance creation' }
 Smallforce >> newRequest [
 	"Helper method to generate a fresh SmallforceRequest."
-	^ SmallforceRequest newWithOrg: org accessToken: accessToken version: version.
+
+	self requestStrategy = SmallforceRequest ifTrue: [
+		^ requestStrategy
+			  newWithOrg: org
+			  accessToken: accessToken
+			  version: version ].
+
+	self requestStrategy = SmallforceCompositeRequest ifTrue: [
+		composite areParamsEmpty ifTrue: [
+			composite org: org.
+			composite accessToken: accessToken.
+			composite version: version ].
+		^ composite ]
 ]
 
 { #category : 'accessing' }
@@ -548,6 +595,18 @@ Smallforce >> org [
 Smallforce >> org: anObject [
 
 	org := anObject
+]
+
+{ #category : 'accessing' }
+Smallforce >> requestStrategy [
+
+	^ requestStrategy
+]
+
+{ #category : 'accessing' }
+Smallforce >> requestStrategy: aSmallforceRequestClass [
+
+	requestStrategy := aSmallforceRequestClass
 ]
 
 { #category : 'Salesforce-manage passwords' }
