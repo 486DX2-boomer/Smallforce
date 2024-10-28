@@ -268,6 +268,7 @@ Smallforce >> executeCompositeRequest [
 
 { #category : 'Salesforce-composite requests' }
 Smallforce >> executeCompositeRequestAndClear [
+"Execute the composite request and clear the composite request queue when finished. Do not clear the request queue if allOrNone was enabled and the transaction was rolled back due to an error."
 
 	self shouldBeImplemented
 ]

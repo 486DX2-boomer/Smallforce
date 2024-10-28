@@ -32,7 +32,9 @@ Class {
 	#instVars : [
 		'requestQueue',
 		'allOrNone',
-		'collateSubRequests'
+		'collateSubRequests',
+		'referenceIdCounter',
+		'referenceIdPrefix'
 	],
 	#category : 'Smallforce-Base',
 	#package : 'Smallforce',
@@ -71,6 +73,7 @@ SmallforceCompositeRequest >> areParamsEmpty [
 { #category : 'initialization' }
 SmallforceCompositeRequest >> clearQueue [
 
+	referenceIdCounter := 0.
 	self requestQueue removeAll
 ]
 
@@ -86,31 +89,39 @@ SmallforceCompositeRequest >> collateSubRequests: aBoolean [
 	collateSubRequests := aBoolean
 ]
 
+{ #category : 'helpers' }
+SmallforceCompositeRequest >> generateReferenceId [
+	"Each subrequest must be identified with a unique ID. In normal use, each is specified by the user. In the context of a Smallforce composite request, it is more sensible to use generated reference IDs, as Smallforce composite requests are batches of discrete API calls, instead of handcrafted chains of dependent calls. Reference IDs are generated dynamically as the composite request is built."
+	referenceIdCounter := referenceIdCounter + 1.
+	
+	^ referenceIdPrefix , referenceIdCounter asString.
+	
+	
+	
+]
+
 { #category : 'initialization' }
 SmallforceCompositeRequest >> initialize [
 
 	requestQueue := OrderedCollection new.
 	allOrNone := false.
 	collateSubRequests := false.
+	referenceIdPrefix := 'subrequest_'.
+	referenceIdCounter := 0.
 	
 ]
 
 { #category : 'rest methods' }
 SmallforceCompositeRequest >> methodGet: anEndpointString [
 
-	| requestDict authDict referenceId |
+	| requestDict referenceId |
 	
-	referenceId := 'IMPLEMENT_THIS'. "IMPLEMENT THIS"
+	referenceId := self generateReferenceId.
 	
 	requestDict := Dictionary new.
 	requestDict at: 'method' put: 'GET'.
 	requestDict at: 'url' put: anEndpointString.
-	requestDict at: 'referenceId' put: referenceId. "Need to figure out how to add refid support"
-
-"	authDict := Dictionary new.
-	authDict at: 'Authorization' put: 'Bearer ' , accessToken.
-	requestDict at: 'httpHeaders' put: authDict."
-	"HEADERS DON'T GO HERE I GUESS I THINK THEY GO IN THE PARENT REQUEST"
+	requestDict at: 'referenceId' put: referenceId.
 
 	self addRequestToQueue: requestDict
 ]
