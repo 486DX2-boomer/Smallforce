@@ -71,6 +71,12 @@ Smallforce >> composite [
 	^ composite
 ]
 
+{ #category : 'Salesforce-composite requests' }
+Smallforce >> compositeRequestQueueContents [
+
+	^ self composite requestQueue.
+]
+
 { #category : 'Salesforce-working with records' }
 Smallforce >> createRecord: anSObject [
 
