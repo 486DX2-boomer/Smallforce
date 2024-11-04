@@ -274,9 +274,27 @@ Smallforce >> executeCompositeRequest [
 
 { #category : 'Salesforce-composite requests' }
 Smallforce >> executeCompositeRequestAndClear [
-"Execute the composite request and clear the composite request queue when finished. Do not clear the request queue if allOrNone was enabled and the transaction was rolled back due to an error."
+	"Execute the composite request and clear the composite request queue when finished. Do not clear the request queue if allOrNone was enabled and the transaction was rolled back due to an error."
 
-	self shouldBeImplemented
+	| transactionHaltedErrorMessage |
+	transactionHaltedErrorMessage := 'PROCESSING_HALTED'. "Will be returned from rolled back composite request"
+
+	composite allOrNone ifFalse: [
+		response := self executeCompositeRequest.
+		self composite clearQueue.
+		^ response ].
+
+	composite allOrNone ifTrue: [ "Check for rollback"
+		response := self executeCompositeRequest.
+		(((response at: 'compositeResponse') first at: 'body') first at:
+			 'errorCode') = transactionHaltedErrorMessage ifTrue: [ "If rollback, do not clear queue."
+			Warning new signal:
+				'The transaction failed and was rolled back. The composite request queue has not been cleared'.
+			^ response ].
+
+		"otherwise return the composite request and clear."
+		self composite clearQueue.
+		^ response ]
 ]
 
 { #category : 'Salesforce-searches and queries' }
